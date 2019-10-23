@@ -1,0 +1,31 @@
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-color: $main-blue;
+    color: $white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0 0 15px;
+    z-index: 10;
+
+    h1 {
+        font-weight: 900;
+        font-size: 24px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 7px
+    }
+
+    .nav-right {
+        * {
+            margin-left: 4px;
+            margin-right: 19px;
+        }
+    }
+}

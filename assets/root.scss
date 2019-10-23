@@ -1,0 +1,16 @@
+/* Variables */
+$main-blue: #39A0ED;
+$blue-text: rgb(27, 32, 41);
+
+$white: #ffffff;
+
+/* Imports */
+@import './nav.scss';
+
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Red+Hat+Text:700&display=swap');
+/* Global Styles */
+body {
+    margin-top: 50px;
+    font-family: 'Red Hat Text', sans-serif;
+}
