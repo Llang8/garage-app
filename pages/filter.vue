@@ -18,6 +18,29 @@
                 <input v-model="distance" type="range" min="1" max="100" value="50" class="settings-slider" id="distance-slider">
             </div>
         </div>
+        <div class="settings-item">
+            <p class="settings-title">Sort By</p>
+            <p>Distance</p>
+        </div>
+        <div class="settings-item settings-categories">
+            <p class="settings-title">Categories</p>
+            <div class="categories">
+                <div class="settings-category">
+                    <p class="category-name">Bikes</p>
+                    <p class="delete-category">X</p>
+                </div>
+                <div class="settings-category">
+                    <p class="category-name">Clothing</p>
+                    <p class="delete-category">X</p>
+                </div>
+                <div class="settings-category">
+                    <p class="category-name">Toys</p>
+                    <p class="delete-category">X</p>
+                </div>
+            </div>
+            
+            <button>+ Add Category</button>
+        </div>
         <div class="settings-apply">
             <div class="settings-item">
                 <p>Apply Changes</p>
