@@ -12,7 +12,8 @@ module.exports = {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css',  rel:'stylesheet' }
     ],
     script: [
       { src: 'https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js' },
@@ -33,6 +34,7 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    {src: '~/plugins/vueMapbox.js', ssr: false}
   ],
   /*
   ** Nuxt.js dev-modules

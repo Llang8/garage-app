@@ -23,7 +23,7 @@ nav {
     }
 
     .nav-right {
-        * {
+        & > * {
             margin-left: 4px;
             margin-right: 19px;
         }
