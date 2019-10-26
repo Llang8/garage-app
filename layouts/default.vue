@@ -19,9 +19,9 @@
           </svg>
         </nuxt-link>
       </div>
-    <side-bar></side-bar>
 <!--     <div class="sidebar-hue"></div> -->
     </nav>
+    <side-bar></side-bar>
     <nuxt />
   </div>
 </template>
@@ -39,17 +39,12 @@ export default {
   },
   mounted() {
     document.addEventListener('click', e => {
-      let sidebar = document.getElementById('sidebar');
-      if (sidebar.classList.contains('sidebar-active') && e.offsetX > sidebar.getBoundingClientRect().width) {
-        this.toggleSidebar();
+      if (e.target == document.getElementsByClassName('sidebar-background')[0]) {
+        document.getElementById('sidebar').classList.remove('sidebar-active');
       }
     })
   },
   computed: {
-/*     showSidebar() {
-      let sidebar = document.getElementById('sidebar');
-      return sidebar.classList.contains('sidebar-active');
-    } */
   },
   methods: {
     toggleSidebar() {

@@ -1,4 +1,4 @@
-// Your web app's Firebase configuration
+/* // Your web app's Firebase configuration
 var firebaseConfig = {
     apiKey: "AIzaSyB4y8Ga0uHHIxpHVFXH6kifKEU6bNMjnYY",
     authDomain: "garage-app-78457.firebaseapp.com",
@@ -11,4 +11,4 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-firebase.analytics();
+firebase.analytics(); */
