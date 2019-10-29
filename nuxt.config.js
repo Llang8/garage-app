@@ -18,7 +18,7 @@ module.exports = {
     script: [
       { src: 'https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js' },
       { src: 'https://www.gstatic.com/firebasejs/7.2.1/firebase-analytics.js' },
-      { src: './firebaseSetup.js' }
+      { src: 'https://www.gstatic.com/firebasejs/7.2.1/firebase-auth.js' },
     ]
   },
   /*
@@ -34,7 +34,9 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    {src: '~/plugins/vueMapbox.js', ssr: false}
+    {src: '~/plugins/authenticate.js', ssr: false},
+    {src: '~/plugins/vueMapbox.js', ssr: false},
+    {src: '~/plugins/eventListeners.js', ssr: false}
   ],
   /*
   ** Nuxt.js dev-modules
@@ -68,5 +70,8 @@ module.exports = {
   server: {     
     port: 3000, // default: 3000     
     host: '0.0.0.0', // default: localhost   
+  },
+  router: {
+    middleware: 'router-auth'
   }
 }

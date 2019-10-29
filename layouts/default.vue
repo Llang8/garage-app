@@ -40,11 +40,6 @@ export default {
     }
   },
   mounted() {
-    document.addEventListener('click', e => {
-      if (e.target == document.getElementsByClassName('sidebar-background')[0]) {
-        this.toggleSidebar();
-      }
-    })
   },
   computed: {
   },
@@ -57,6 +52,15 @@ export default {
       } else {
         sidebar.classList.add('sidebar-active');
         document.body.style.overflowY = "hidden";
+      }
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      let sidebar = document.getElementById('sidebar');
+      if( sidebar.classList.contains('sidebar-active')) {
+        sidebar.classList.remove('sidebar-active');
+        document.body.style.overflow = "auto";
       }
     }
   }

@@ -1,9 +1,45 @@
 .settings-page {
-    padding: 0 0 90px;
+    padding: 50px 0 90px;
+    position: absolute;
+    top: 0;
+    left: 0;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    min-height: calc(100vh);
+    background-color: $main-blue; 
 
-    .nav-left > h1 {
+    nav {
+        background-color: $main-blue;
+        position: absolute;
+        z-index: 0;
+        
+        .nav-left {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+
+            h1 {
+                position: relative;
+                transform: none;
+                top: 0;
+                left: 0;
+                margin-left: 15px;
+                margin-bottom: 2px;
+            }
+        }
+    }
+
+    .settings-page-title {
+        position: absolute;
+        transform: none;
+        color: white;
+        top: 8px;
+        left: 30px;
+        margin-left: 15px;
+        margin-bottom: 2px;    
+        font-size: 24px;   
         text-shadow: 2px 2px 2px rgba(0,0,0,.2);
     }
 }

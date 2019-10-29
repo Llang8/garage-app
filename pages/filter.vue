@@ -1,5 +1,6 @@
 <template>
-    <div class="filter">
+    <div class="filter settings-content-wrapper">
+        <h1 class="settings-page-title">Filter</h1>
         <div class="settings-item settings-edit">
             <p>Chicago, Illinois</p>
             <p>Edit</p>
