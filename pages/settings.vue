@@ -8,8 +8,8 @@
         </div>
         <div class="settings-item settings-edit">
             <p class="settings-title">Username</p>
-            <p>Llang8</p>
-            <p>Edit</p>
+            <p>{{ username }}</p>
+            <p @click="updateUsername()">Edit</p>
         </div>
         <div class="settings-item">
             <p style="text-align: center; width:100%;">Change Password</p>
@@ -42,6 +42,14 @@ export default {
             }).catch((e) => {
                 alert(e.message);
             });
+        },
+        updateUsername() {
+            
+        }
+    },
+    computed: {
+        username() {
+            return this.$store.state.user.displayName;
         }
     }
 }

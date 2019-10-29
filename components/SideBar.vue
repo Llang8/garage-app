@@ -1,7 +1,7 @@
 <template>
     <div class="sidebar" id="sidebar">
         <div class="sidebar-top">
-            <h1>Username</h1>
+            <h1>{{ username }}</h1>
             <h2>Free Tier</h2>
         </div>
         <div class="sidebar-links">
@@ -66,6 +66,11 @@ export default {
                 sidebar.classList.add('sidebar-active');
                 document.body.style.overflowY = "hidden";
             }
+        }
+    },
+    computed: {
+        username() {
+            return this.$store.state.user.displayName;
         }
     }
 }

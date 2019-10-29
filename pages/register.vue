@@ -24,7 +24,7 @@ export default {
     },
     methods: {
         register() {
-            if(this.password === this.confirmPassword) {
+            if(this.password === this.confirmPassword && this.username && this.email) {
                 this.$store.dispatch('signUpWithEmail', {
                     username: this.username, 
                     email: this.email,
@@ -32,10 +32,10 @@ export default {
                 }).then(() => {
                     location.reload()
                 }).catch((e) => {
-                    alert(e.message);
+                    alert(e);
                 });
             } else {
-                alert("Passwords don't match");
+                alert("Something went wrong, please check your passwords and try again");
             }
         }
     }
