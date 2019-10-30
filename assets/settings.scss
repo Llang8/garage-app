@@ -61,6 +61,24 @@
     align-items: center;
     box-shadow: 4px 4px 4px rgba(0,0,0,.2);
 
+    input[type="text"] {
+        width: 100%;
+        height: 100%;
+        padding: 5px 10px;
+        border: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: $blue-text;
+    }
+
+    textarea {
+        width: 100%;
+        height: 100%;
+        padding: 5px 10px;
+        border: 0;
+        color: $blue-text;        
+    }
+
     .settings-title {
         position: absolute;
         top: -24px;
@@ -163,9 +181,10 @@
             .settings-category {
                 display: flex;
                 padding: 5px 10px;
-                margin: 5px 10px;
+                margin: 5px 5px;
                 border-radius: 5px;
                 background-color: #f3f3f3;
+                font-size: 14px;
 
                 .category-name {
                     margin-right: 10px;
@@ -192,6 +211,64 @@
             text-shadow: 2px 2px 2px rgba(0,0,0,.2);
         }
     }
+
+    &.settings-images {
+        height: 200px;
+        
+        .settings-images_wrapper {
+            width: 100%;
+            height: 100%;
+            overflow-x: auto;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+
+            .settings-images_img-wrapper {
+                position: relative;
+                margin: 0 10px;
+                
+                img {
+                    max-height: 150px;
+                }
+
+                p {
+                    position: absolute;
+                    top: 5px;
+                    right: 10px;
+                    color: white;
+                    text-shadow: 2px 2px 2px rgba(0,0,0,.4);
+                }
+            }
+        }
+    }
+
+    &.settings-datetime-picker {
+        flex-direction: column;
+        padding: 10px;
+
+        .datetimes {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+
+            .datetime {
+                width: 100%;
+                display: flex;
+                justify-content: space-evenly;
+                margin-bottom: 5px;
+
+                input {
+                    border-width: 1px;
+                }
+            }
+        }
+    }
+
+    &.file-upload {
+        height: 100%;
+        padding-top: 8px;
+    }
 }
 
 .settings-apply {
@@ -203,6 +280,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: $main-blue;
 
     p {
         font-size: 18px;
@@ -213,5 +291,22 @@
         justify-content: center;
         align-items: center;
         margin: 0;
+    }
+
+    button {
+        height: 30px;
+        border: 0;
+        border-radius: 30px;
+        width: 40%;
+        max-width: 100px;
+        min-width: 50px;
+        font-weight: 600;
+        background-color: white;
+        color: $blue-text;
+        margin: 0 10px;
+    }
+
+    &.sale-page-controls {
+        height: 50px;
     }
 }
