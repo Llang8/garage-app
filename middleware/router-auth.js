@@ -3,7 +3,8 @@ const protectedRoutes = [
     '/mapview',
     '/filter',
     '/settings',
-    '/createsale'
+    '/createsale',
+    '/mysales'
 ]
 
 export default function ({store, redirect, route}) {

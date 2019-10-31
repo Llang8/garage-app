@@ -8,16 +8,20 @@
         <input type="text" v-model="search">
       </div>
       <div class="results-count">
-        <p><strong>{{ results.length }}</strong> sales in a <strong>{{ radiusMI }} mile</strong> radius.</p>
+        <p><strong>{{ sales.length }}</strong> sales in a <strong>{{ radiusMI }} mile</strong> radius.</p>
       </div>
     </div>
     <div class="results-container">
-      <div class="result" v-for="i in 10">
-        <img src="https://placehold.it/120x120" alt="Garage Sale Pic">
-        <h1 class="sale-title">Large multi-family garage sale</h1>
-        <h2 class="sale-town">Hawthorne Woods</h2>
-        <p class="sale-description">Lots of NEW items, in addition to normal garage sale finds. Women's clothes and shoes , household items, outdoor and garden, holiday decor, tools, collectables, throw rugs and decorative rugs, cosmetics and beauty products...</p>
-        <p class="categories"><strong>Categories: </strong>Toys Tools Clothes Games Home</p>
+      <div class="result" v-for="(sale, index) in sales">
+        <img :src="sale.images[0]" :alt="sale.title">
+        <nuxt-link 
+          :to="{name:'sale-id', params: {id: sale.id}}"
+        >
+          <h1 class="sale-title">{{ sale.title }}</h1>
+        </nuxt-link>
+        <h2 class="sale-town">{{ sale.city }}</h2>
+        <p class="sale-description">{{ sale.description.substring(0, 300) }}...</p>
+        <p class="categories"><strong>Categories:</strong><span v-for="(category, index) in sale.categories"> {{ category }}</span></p>
         <h3 class="distance">{{ Math.floor(Math.random() * 26) }} Miles</h3>
         <hr />
       </div>
@@ -31,8 +35,18 @@ export default {
   data() {
     return {
       search: '',
-      results: ['','',''],
       radiusMI: 20
+    }
+  },
+  created() {
+    this.$store.dispatch('getSales')
+      .then(() => {
+        console.log(this.$store.state.sales);
+      })
+  },
+  computed: {
+    sales() {
+      return this.$store.state.sales;
     }
   }
 }
@@ -101,6 +115,9 @@ export default {
     img {
       float: left;
       margin: 0 10px 5px 0;
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
     }
 
     hr {
@@ -127,6 +144,10 @@ export default {
       bottom: 15px;
       right: 15px;
       font-size: 12px;
+    }
+
+    .categories {
+      margin-right: 60px;
     }
 
     p {

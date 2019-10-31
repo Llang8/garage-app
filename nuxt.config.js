@@ -1,6 +1,6 @@
 
 module.exports = {
-  mode: 'spa',
+  mode: 'universal',
   /*
   ** Headers of the page
   */
@@ -16,9 +16,6 @@ module.exports = {
       { href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css',  rel:'stylesheet' }
     ],
     script: [
-      { src: 'https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js' },
-      { src: 'https://www.gstatic.com/firebasejs/7.2.1/firebase-analytics.js' },
-      { src: 'https://www.gstatic.com/firebasejs/7.2.1/firebase-auth.js' },
     ]
   },
   /*
@@ -36,7 +33,7 @@ module.exports = {
   plugins: [
     {src: '~/plugins/authenticate.js', ssr: false},
     {src: '~/plugins/vueMapbox.js', ssr: false},
-    {src: '~/plugins/eventListeners.js', ssr: false}
+    {src: '~/plugins/eventListeners.js', ssr: false},
   ],
   /*
   ** Nuxt.js dev-modules

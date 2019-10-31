@@ -38,7 +38,7 @@ export default {
     methods: {
         signOut() {
             this.$store.dispatch('signOut').then(() => {
-                location.reload()
+                location.href = "/"
             }).catch((e) => {
                 alert(e.message);
             });
