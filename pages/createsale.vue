@@ -101,6 +101,7 @@ export default {
     },
     methods: {
         onFileSelected(event) {
+            console.log(this.saleDay);
             if(this.images.length >= 10) {
                 alert('You can only add 10 images')
             } else {

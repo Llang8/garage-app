@@ -1,0 +1,80 @@
+.sale-page {
+    padding: 20px;
+    color: rgb(47, 51, 59);
+    
+    .image-carousel {
+        display: flex;
+        overflow-x: auto;
+
+        img {
+            margin: 0 10px;
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+        }
+    }
+
+    h1 {
+        font-size: 18px;
+        margin: 10px 0 5px;
+        color: $blue-text;
+    }
+
+    h2 {
+        font-size: 14px;
+        margin-bottom: 10px;
+        color: $blue-text;
+    }
+
+    .sale-categories {
+
+        .category {
+            color: rgb(80, 84, 92);
+        }
+    }
+
+    .sale-description {
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
+
+    .sale-dates-wrapper {
+        display: flex;
+        justify-content: center;
+        margin: 10px 0;
+
+        .sale-dates {
+            text-align: left;
+            margin: 0 auto;
+
+            table {
+                border-collapse: collapse;
+
+                th {
+                    background: rgb(237, 245, 250);
+                }
+
+                tr:nth-child(even) {background-color: #f2f2f2;}
+            
+                td, th {
+                    padding: 5px;
+                    border: 1px solid $blue-text;
+                }
+            }
+        }
+    }
+
+    .sale-buttons {
+        display: flex;
+        justify-content: center;
+
+        button {
+            margin: 0 10px;
+            padding: 10px 15px;
+            background-color: $blue-text;
+            border: 0;
+            border-radius: 5px;
+            color: white;
+        }
+    }
+}
