@@ -28,14 +28,14 @@
                         <p>From</p>
                         <p>To</p>
                     </div>
-                    <div v-for="(day,index) in saleDay" class="datetime">
+                    <div v-for="(day,index) in dates" class="datetime">
                         <input type="date" v-model="day['date']">
                         <input type="time" v-model="day['from']">
                         <input type="time" v-model="day['to']">
                         <p @click="deleteDay(index)">X</p>
                     </div>
                 </div>
-                <button @click="saleDay.push({})">Add Day</button>
+                <button @click="dates.push({})">Add Day</button>
             </div>
         </div>
         <div class="sale-page-2" v-if="page === 2">
@@ -74,11 +74,15 @@
         <div class="settings-apply sale-page-controls">
             <button @click="page--" v-if="page > 1">Previous</button>
             <button @click="page++" v-if="page < 3">Next</button>
+            <button class="submit-sale" @click="submitSale()">Submit Sale</button>
         </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+import { db } from '~/plugins/firebase';
+
 export default {
     layout: 'settings',
     data() {
@@ -87,7 +91,7 @@ export default {
             title: null,
             description: null,
             categories: [],
-            saleDay: [{}],
+            dates: [{}],
             images: [],
             imgPreviews: [],
             address: {
@@ -96,12 +100,12 @@ export default {
                 zipCode: null,
                 city: null,
                 state: null
-            }
+            },
+            temporaryImages: ['https://picsum.photos/200','https://picsum.photos/200','https://picsum.photos/200','https://picsum.photos/200']
         }
     },
     methods: {
         onFileSelected(event) {
-            console.log(this.saleDay);
             if(this.images.length >= 10) {
                 alert('You can only add 10 images')
             } else {
@@ -120,7 +124,39 @@ export default {
             this.categories.splice(index, 1);
         },
         deleteDay(index) {
-            this.saleDay.splice(index, 1);
+            this.dates.splice(index, 1);
+        },
+        submitSale() {
+            console.log('TEST');
+            if (this.address.street == null || this.address.city == null || 
+                this.address.zipCode == null || this.address.state == null) {
+                
+                alert('Please fill out address');
+            } else {
+                let apiKey = 'AIzaSyD10tBIEsk0pFf1sn5igJmdyIuWTdMro8s';
+                console.log(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURI(this.address.street)}+${encodeURI(this.address.city)}+${encodeURI(this.address.state)}+${encodeURI(this.address.zipCode)}&key=${apiKey}`);
+                axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURI(this.address.street)}+${encodeURI(this.address.city)}+${encodeURI(this.address.state)}+${encodeURI(this.address.zipCode)}&key=${apiKey}`)
+                    .then((location) => {
+                        console.log(location)
+                        location = location.data.results[0].geometry.location
+                        db.collection('sales').add({
+                            categories: this.categories,
+                            city: this.address.city,
+                            dates: this.dates,
+                            description: this.description,
+                            geopoint: [location.lat,location.lng],
+                            images: this.temporaryImages,
+                            title: this.title
+                        }).then((res) => {
+                            console.log(res);
+                        }).catch((e) => {
+                            console.log(e.message);
+                        })
+                    })
+                    .catch((e) => {
+                        alert(e.message);
+                    })
+            }
         }
     }
 }
