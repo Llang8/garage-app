@@ -1,3 +1,4 @@
+import { db } from '~/plugins/firebase.js';
 
 module.exports = {
   mode: 'universal',
@@ -62,6 +63,17 @@ module.exports = {
     ** You can extend webpack config here
     */
     extend (config, ctx) {
+
+    }
+  },
+  generate: {
+    routes: () => {
+      return db.collection('sales').get()
+        .then((snapshot) => {
+          return snapshot.docs.map((doc) => {
+            return '/sale/' + doc.id;
+          });
+        })
     }
   },
   server: {     

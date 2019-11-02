@@ -60,6 +60,9 @@ export default {
                 }
             })
     },
+    generate: {
+        fallback: 'sale/sale.html'
+    },
     data() {
         return {
             sale: null
