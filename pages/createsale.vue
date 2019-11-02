@@ -146,7 +146,8 @@ export default {
                             description: this.description,
                             geopoint: [location.lat,location.lng],
                             images: this.temporaryImages,
-                            title: this.title
+                            title: this.title,
+                            uid: this.$store.state.user.uid
                         }).then((res) => {
                             console.log(res);
                         }).catch((e) => {
