@@ -150,6 +150,8 @@ export default {
                             uid: this.$store.state.user.uid
                         }).then((res) => {
                             console.log(res);
+                            /* Rebuild app with new page */
+                            axios.post(`https://api.netlify.com/build_hooks/5dbcf05aaa2c1686b61767e4`)
                         }).catch((e) => {
                             console.log(e.message);
                         })
