@@ -37,7 +37,8 @@ export default {
         db.collection('sales').where('uid', "==", this.$store.state.user.uid).get()
             .then((snapshot) => {
                 snapshot.forEach((doc) => {
-                    this.sales.push(doc.data());
+                    this.sales.push({ id: doc.id, ...doc.data()});
+                    
                 })
             })
             .catch(e => {

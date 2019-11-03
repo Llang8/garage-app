@@ -1,7 +1,7 @@
 <template>
     <div class="create-sale settings-content-wrapper">
         <h1 class="settings-page-title">Create a Sale</h1>
-        <div class="sale-page-1" v-if="page === 1">
+        <div class="sale-page-1" v-if="page === 1 ">
             <div class="settings-item">
                 <p class="settings-title">Sale Title</p>
                 <input type="text" v-model="title" placeholder="Sale Title...">
@@ -76,6 +76,9 @@
             <button @click="page++" v-if="page < 3">Next</button>
             <button class="submit-sale" @click="submitSale()">Submit Sale</button>
         </div>
+        <div class="create-sale__loading" v-if="savingSale">
+            Sending sale to our servers...
+            <svg width="200px"  height="200px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-flickr" style="background: none;"><circle cy="50" cx="31.9638" fill="#fdfdfd" r="20"><animate attributeName="cx" calcMode="linear" values="30;70;30" keyTimes="0;0.5;1" dur="1" begin="-0.5s" repeatCount="indefinite"></animate></circle><circle cy="50" cx="68.0362" fill="#85a2b6" r="20"><animate attributeName="cx" calcMode="linear" values="30;70;30" keyTimes="0;0.5;1" dur="1" begin="0s" repeatCount="indefinite"></animate></circle><circle cy="50" cx="31.9638" fill="#fdfdfd" r="20"><animate attributeName="cx" calcMode="linear" values="30;70;30" keyTimes="0;0.5;1" dur="1" begin="-0.5s" repeatCount="indefinite"></animate><animate attributeName="fill-opacity" values="0;0;1;1" calcMode="discrete" keyTimes="0;0.499;0.5;1" repeatCount="indefinite" dur="1s"></animate></circle></svg>        </div>
     </div>
 </template>
 
@@ -101,6 +104,7 @@ export default {
                 city: null,
                 state: null
             },
+            savingSale: false,
             temporaryImages: ['https://picsum.photos/200','https://picsum.photos/200','https://picsum.photos/200','https://picsum.photos/200']
         }
     },
@@ -133,6 +137,7 @@ export default {
                 
                 alert('Please fill out address');
             } else {
+                this.savingSale = true;
                 let apiKey = 'AIzaSyD10tBIEsk0pFf1sn5igJmdyIuWTdMro8s';
                 console.log(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURI(this.address.street)}+${encodeURI(this.address.city)}+${encodeURI(this.address.state)}+${encodeURI(this.address.zipCode)}&key=${apiKey}`);
                 axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURI(this.address.street)}+${encodeURI(this.address.city)}+${encodeURI(this.address.state)}+${encodeURI(this.address.zipCode)}&key=${apiKey}`)
@@ -150,15 +155,17 @@ export default {
                             uid: this.$store.state.user.uid,
                             state: this.address.state
                         }).then((res) => {
-                            console.log(res);
                             /* Rebuild app with new page */
                             axios.post(`https://api.netlify.com/build_hooks/5dbcf05aaa2c1686b61767e4`)
+                            this.$router.push('mysales');
                         }).catch((e) => {
-                            console.log(e.message);
+                            alert(e.message);
+                            this.savingSale = false;
                         })
                     })
                     .catch((e) => {
                         alert(e.message);
+                        this.savingSale = false;
                     })
             }
         }

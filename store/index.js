@@ -101,7 +101,7 @@ export const actions = {
     },
     getSales({commit, context}, payload) {
         return new Promise ((resolve, reject) => {
-            db.collection('sales').limit(10).get().then((snapshot) => {
+            db.collection('sales').limit(25).get().then((snapshot) => {
                 let data = []
                 console.log(snapshot);
                 snapshot.docs.forEach((doc) => {
