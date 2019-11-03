@@ -3,6 +3,7 @@ import { auth, db } from "../plugins/firebase";
 import Cookie from 'js-cookie';
 import JWTDecode from 'jwt-decode';
 import cookieparser from 'cookieparser';
+import axios from 'axios';
 
 export const state = () => ({
     user: null,
@@ -68,13 +69,16 @@ export const actions = {
             auth.createUserWithEmailAndPassword(payload.email, payload.password)
                 .then(() => {
                     if (payload.username) {
-                        let user = firebase.auth().currentUser;
+                    
+                        let user = auth.currentUser;
                         user.sendEmailVerification();
+                        
                         user.updateProfile({
                             displayName: payload.username
                         }).then(() => {
                             resolve();
                         });
+                    
                     } else {
                         resolve();
                     }

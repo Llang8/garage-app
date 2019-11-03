@@ -19,7 +19,7 @@
         >
           <h1 class="sale-title">{{ sale.title }}</h1>
         </nuxt-link>
-        <h2 class="sale-town">{{ sale.city }}</h2>
+        <h2 class="sale-town">{{ sale.city }}, {{ sale.state }}</h2>
         <p class="sale-description">{{ sale.description.substring(0, 300) }}...</p>
         <p class="categories"><strong>Categories:</strong><span v-for="(category, index) in sale.categories"> {{ category }}</span></p>
         <h3 class="distance">{{ Math.floor(Math.random() * 26) }} Miles</h3>

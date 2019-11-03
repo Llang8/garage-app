@@ -147,7 +147,8 @@ export default {
                             geopoint: [location.lat,location.lng],
                             images: this.temporaryImages,
                             title: this.title,
-                            uid: this.$store.state.user.uid
+                            uid: this.$store.state.user.uid,
+                            state: this.address.state
                         }).then((res) => {
                             console.log(res);
                             /* Rebuild app with new page */

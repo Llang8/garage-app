@@ -23,7 +23,7 @@ export default {
                 email: this.email, 
                 password: this.password
             }).then(() => {
-                location.reload()
+                this.$router.push('/');
             }).catch((e) => {
                 alert(e.message);
             });
