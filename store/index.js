@@ -13,6 +13,7 @@ export const state = () => ({
         sortBy: 'distance',
         categories: []
     },
+    bookmarks: [],
     sales: []
 })
 
@@ -23,6 +24,22 @@ export const mutations = {
     },
     setSales (state, payload) {
         state.sales = payload;
+    },
+    setBookmarks (state, payload) {
+        state.bookmarks = payload;
+    },
+    addBookmark (state, payload) {
+        console.log(payload);
+        let ids = state.bookmarks.map((bookmark) => {
+            return bookmark.id;
+        })
+        if (!ids.includes(payload.id)) {
+            state.bookmarks = [payload, ...state.bookmarks];
+        }
+    },
+    removeBookmark (state, payload) {
+        let i = state.bookmarks.map(bookmark => bookmark.bookmarkId).indexOf(payload.id);
+        state.bookmarks.splice(i, 1);
     }
 }
 
@@ -114,5 +131,60 @@ export const actions = {
 
             
         });
+    },
+    addBookmark({commit, context}, payload) {
+        return new Promise ((resolve, reject) => {
+            db.collection('user_bookmarks').add({
+                uid: payload.uid,
+                saleId: payload.saleId
+            }).then((res) => {
+                db.collection('sales').doc(payload.saleId).get()
+                .then((snapshot) => {
+                    if(snapshot.exists) {
+                        commit('addBookmark', { id: snapshot.id, bookmarkId: res.id, ...snapshot.data() });
+                    }
+                    resolve(res);
+                }).catch(e => {
+                    reject(e);
+                });
+            }).catch((e) => {
+                reject(e);
+            })
+        })
+    },
+    getBookmarks({commit, context}, payload) {
+        return new Promise ((resolve, reject) => {
+            db.collection('user_bookmarks').where('uid', "==", payload.uid).get()
+            .then((snapshot) => {
+                let sales = [];
+                snapshot.forEach((doc) => {
+                    sales.push({ id: doc.id, ...doc.data()});
+                    db.collection('sales').doc(doc.data().saleId).get()
+                        .then((snapshot) => {
+                            if(snapshot.exists) {
+                                commit('addBookmark', { id: snapshot.id, bookmarkId: doc.id, ...snapshot.data() });
+                            }
+                        }).catch(e => {
+                            console.error(e);
+                        });
+                })
+                resolve();
+            })
+            .catch(e => {
+                reject(e);
+            });
+        })
+    },
+    removeBookmark({commit, context}, payload) {
+        return new Promise ((resolve, reject) => {
+            console.log(payload.id);
+            db.collection('user_bookmarks').doc(payload.id).delete()
+            .then((res) => {
+                commit('removeBookmark', payload.id);
+                resolve(res);
+            }).catch((e) => {
+                reject(e);
+            })
+        })
     }
 }

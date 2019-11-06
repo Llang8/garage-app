@@ -14,6 +14,20 @@
     <div class="results-container">
       <div class="result" v-for="(sale, index) in sales">
         <img :src="sale.images[0]" :alt="sale.title">
+        <svg @click="bookmark(sale.id)" v-if="!bookmarked.includes(sale.id)" width="9" height="18" viewBox="0 0 9 18" style="float: right; margin-left: 5px;" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M8.40637 17.9997C8.32808 17.9998 8.25054 17.9833 8.17827 17.951C8.106 17.9187 8.04044 17.8713 7.98542 17.8116L4.49804 14.0418L1.01302 17.8116C0.930535 17.901 0.82513 17.9621 0.710187 17.9872C0.595244 18.0123 0.475942 18.0003 0.367414 17.9525C0.258886 17.9048 0.16603 17.8236 0.100619 17.7192C0.035207 17.6148 0.000175095 17.4919 0 17.3661V0.633973C5.14056e-05 0.550664 0.015413 0.468183 0.0451948 0.391237C0.0749766 0.31429 0.118607 0.244385 0.173585 0.185515C0.228563 0.126646 0.293817 0.0799676 0.365621 0.0481375C0.437426 0.0163074 0.514374 -5.50144e-05 0.592073 1.38966e-07H8.40795C8.48565 -5.50144e-05 8.5626 0.0163074 8.6344 0.0481375C8.70621 0.0799676 8.77146 0.126646 8.82644 0.185515C8.88142 0.244385 8.92502 0.31429 8.9548 0.391237C8.98459 0.468183 8.99995 0.550664 9 0.633973V17.3645C9.00015 17.448 8.98491 17.5308 8.95511 17.608C8.92532 17.6853 8.88158 17.7554 8.82641 17.8145C8.77124 17.8735 8.70572 17.9202 8.63364 17.952C8.56155 17.9838 8.48432 18 8.40637 17.9997ZM4.49804 12.5073C4.57632 12.5072 4.65384 12.5238 4.72609 12.5561C4.79835 12.5884 4.8639 12.6357 4.91899 12.6953L7.81392 15.8249V1.2692H1.18257V15.8249L4.0775 12.6953C4.13252 12.6357 4.19801 12.5884 4.2702 12.5561C4.34239 12.5239 4.41982 12.5072 4.49804 12.5073Z" fill="#4C6085"/>
+        </svg>
+        <svg @click="removeBookmark(sale.id)" v-if="bookmarked.includes(sale.id)" version="1.1"  width="9" height="18"  style="float: right; margin-left: 5px;enable-background:new 0 0 9 18;" id="Layer_1" x="0px" y="0px"
+        viewBox="0 0 9 18">
+            <path class="st0" d="M8.4,18c-0.1,0-0.2,0-0.2,0c-0.1,0-0.1-0.1-0.2-0.1L4.5,14L1,17.8C0.9,17.9,0.8,18,0.7,18s-0.2,0-0.3,0
+                c-0.1,0-0.2-0.1-0.3-0.2C0,17.6,0,17.5,0,17.4V0.6c0-0.1,0-0.2,0-0.2c0-0.1,0.1-0.1,0.1-0.2C0.2,0.1,0.3,0.1,0.4,0
+                c0.1,0,0.1,0,0.2,0h7.8c0.1,0,0.2,0,0.2,0c0.1,0,0.1,0.1,0.2,0.1C8.9,0.2,8.9,0.3,9,0.4c0,0.1,0,0.2,0,0.2v16.7c0,0.1,0,0.2,0,0.2
+                c0,0.1-0.1,0.1-0.1,0.2c-0.1,0.1-0.1,0.1-0.2,0.1C8.6,18,8.5,18,8.4,18z M4.5,12.5c0.1,0,0.2,0,0.2,0c0.1,0,0.1,0.1,0.2,0.1l2.9,3.1
+                V1.3H1.2v14.6l2.9-3.1c0.1-0.1,0.1-0.1,0.2-0.1C4.3,12.5,4.4,12.5,4.5,12.5z"/>
+            <rect y="0.9" class="st1" width="9" height="12.3"/>
+            <polygon class="st1" points="0.5,12.6 4.8,13 1.1,16.9 "/>
+            <polygon class="st1" points="8.5,12.4 8,16.6 4.4,13.2 "/>
+        </svg>            
         <nuxt-link 
           :to="{name:'sale-id', params: {id: sale.id}}"
         >
@@ -21,7 +35,7 @@
         </nuxt-link>
         <h2 class="sale-town">{{ sale.city }}, {{ sale.state }}</h2>
         <p class="sale-description">{{ sale.description.substring(0, 300) }}...</p>
-        <p class="categories"><strong>Categories:</strong><span v-for="(category, index) in sale.categories"> {{ category }}</span></p>
+        <p class="categories"><strong>Categories:</strong><span v-for="(category, index) in sale.categories"> {{ category }}</span></p> 
         <h3 class="distance">{{ Math.floor(Math.random() * 26) }} Miles</h3>
         <hr />
       </div>
@@ -43,10 +57,51 @@ export default {
       .then(() => {
         console.log(this.$store.state.sales);
       })
+    this.$store.dispatch('getBookmarks', {
+      uid: this.$store.state.user.uid
+    })
+      .then(() => {
+        console.log('Bookmarks dispatched')
+      })
   },
   computed: {
     sales() {
       return this.$store.state.sales;
+    },
+    bookmarked() {
+      return this.$store.state.bookmarks.map((bookmarks) => {
+        console.log(bookmarks.id);
+        return bookmarks.id;
+      });
+    }
+  },
+  methods: {
+    bookmark(id) {
+      this.$store.dispatch('addBookmark', {
+        uid: this.$store.state.user.uid,
+        saleId: id
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+    },
+    removeBookmark(id) {
+      let bookmark = this.$store.state.bookmarks.filter((bookmark) => {
+        return bookmark.id == id;
+      })[0];
+
+      this.$store.dispatch('removeBookmark', {
+        id: bookmark.bookmarkId
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
     }
   }
 }
@@ -55,5 +110,7 @@ export default {
 <style lang="scss">
 @import '../assets/root.scss';
 
+.st0{fill-rule:evenodd;clip-rule:evenodd;fill:#4C6085;}
+.st1{fill:#4C6085;}
 
 </style>
