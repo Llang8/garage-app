@@ -19,7 +19,6 @@ export const state = () => ({
 
 export const mutations = {
     setUser (state, account) {
-        console.log(account);
         state.user = account;
     },
     setSales (state, payload) {
@@ -29,7 +28,6 @@ export const mutations = {
         state.bookmarks = payload;
     },
     addBookmark (state, payload) {
-        console.log(payload);
         let ids = state.bookmarks.map((bookmark) => {
             return bookmark.id;
         })
@@ -177,10 +175,9 @@ export const actions = {
     },
     removeBookmark({commit, context}, payload) {
         return new Promise ((resolve, reject) => {
-            console.log(payload.id);
             db.collection('user_bookmarks').doc(payload.id).delete()
             .then((res) => {
-                commit('removeBookmark', payload.id);
+                commit('removeBookmark', { id: payload.id });
                 resolve(res);
             }).catch((e) => {
                 reject(e);

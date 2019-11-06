@@ -1,7 +1,8 @@
 <template>
-<div class="bookmarks index">
+<div class="bookmarks">
     <div class="results-container">
-        <div class="result" v-for="(sale, index) in sales">
+        <div class="result" v-for="(sale, index) in sales" :key="sale.id">
+            {{ sale.bookmarkId }}
             <img :src="sale.images[0]" :alt="sale.title">
             <svg @click="removeBookmark(sale.bookmarkId)" version="1.1"  width="9" height="18"  style="float: right; margin-left: 5px;enable-background:new 0 0 9 18;" id="Layer_1" x="0px" y="0px"
             viewBox="0 0 9 18">
@@ -41,7 +42,6 @@ created() {
         uid: this.$store.state.user.uid
     })
     .then(() => {
-        console.log(this.$store.state.bookmarks);
     })
 },
 computed: {

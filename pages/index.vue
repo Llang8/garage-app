@@ -60,9 +60,6 @@ export default {
     this.$store.dispatch('getBookmarks', {
       uid: this.$store.state.user.uid
     })
-      .then(() => {
-        console.log('Bookmarks dispatched')
-      })
   },
   computed: {
     sales() {
@@ -95,9 +92,6 @@ export default {
 
       this.$store.dispatch('removeBookmark', {
         id: bookmark.bookmarkId
-      })
-      .then((res) => {
-        console.log(res);
       })
       .catch((e) => {
         console.error(e);
