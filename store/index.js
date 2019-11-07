@@ -13,6 +13,7 @@ export const state = () => ({
         sortBy: 'distance',
         categories: []
     },
+    position: null,
     bookmarks: [],
     sales: []
 })
@@ -20,6 +21,9 @@ export const state = () => ({
 export const mutations = {
     setUser (state, account) {
         state.user = account;
+    },
+    setUserPosition (state, position) {
+        state.position = position.position;
     },
     setSales (state, payload) {
         state.sales = payload;
@@ -116,7 +120,7 @@ export const actions = {
     },
     getSales({commit, context}, payload) {
         return new Promise ((resolve, reject) => {
-            db.collection('sales').limit(25).get().then((snapshot) => {
+            db.collection('sales').get().then((snapshot) => {
                 let data = []
                 console.log(snapshot);
                 snapshot.docs.forEach((doc) => {

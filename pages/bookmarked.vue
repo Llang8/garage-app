@@ -1,8 +1,8 @@
 <template>
 <div class="bookmarks">
+    <h2 style="text-align: center;">Your Bookmarks</h2>
     <div class="results-container">
         <div class="result" v-for="(sale, index) in sales" :key="sale.id">
-            {{ sale.bookmarkId }}
             <img :src="sale.images[0]" :alt="sale.title">
             <svg @click="removeBookmark(sale.bookmarkId)" version="1.1"  width="9" height="18"  style="float: right; margin-left: 5px;enable-background:new 0 0 9 18;" id="Layer_1" x="0px" y="0px"
             viewBox="0 0 9 18">
