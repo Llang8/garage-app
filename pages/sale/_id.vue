@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="sale-buttons">
-            <button>Get Directions</button>
+            <button @click="openMaps(sale)">Get Directions</button>
             <button>Show on Map</button>
         </div>
     </div>
@@ -68,13 +68,21 @@ export default {
             sale: null
         }
     },
-    computed: {
-        dates() {
-
+    methods: {
+        openMaps(sale) {
+            let lat = sale.geopoint[0];
+            let lng = sale.geopoint[1];
+            /* if we're on iOS, open in Apple Maps */
+            if
+                ((navigator.platform.indexOf("iPhone") != -1) || 
+                (navigator.platform.indexOf("iPad") != -1) || 
+                (navigator.platform.indexOf("iPod") != -1)) {
+                window.open(`maps://maps.google.com/maps?daddr=${lat},${lng}&amp;ll=`);
+            /* else use Google */
+            } else {
+                window.open(`https://maps.google.com/maps?daddr=${lat},${lng}&amp;ll=`);
+            }
         }
-    },
-    created() {
-
     }
 }
 </script>
