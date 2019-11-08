@@ -13,6 +13,7 @@ export default function ({store, redirect, route}) {
     } else if (store.state.user == null && isProtectedRoute(route)) {
         return redirect('/login');
     }
+    console.log('ROUTE2' + route.path);
 }
 
 const isProtectedRoute = (route) => {

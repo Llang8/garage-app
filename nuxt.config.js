@@ -100,6 +100,6 @@ module.exports = {
     host: '0.0.0.0', // default: localhost   
   },
   router: {
-    middleware: 'router-auth'
+    middleware: ['router-auth']
   }
 }

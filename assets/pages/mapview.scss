@@ -1,0 +1,71 @@
+.current-sale {
+    position: fixed;
+    z-index: 1;
+    bottom: 5px;
+    right: 5px;
+    height: 250px;
+    width: 250px;
+    padding: 10px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px rgba(0,0,0,.5);
+
+    .img-carousel {
+        display: flex;
+        width: 100%;
+        overflow-x: auto;
+
+        img {
+            margin: 0 5px;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+    }
+
+    .current-sale__description {
+        position: relative;
+        height: 130px;
+        width: 100%;
+        padding: 0 0 40px 0;
+
+        p {
+            font-size: 12px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .current-sale__title {
+            color: $blue-text;
+        }
+    }
+
+    .current-sale__buttons {
+        position: absolute;
+        bottom: 5px;
+
+        span {
+            background: $main-blue;
+            padding: 5px 10px;
+            border-radius: 15px;
+            margin: 10px 5px 0 0;
+
+            a {
+                color: white;
+                text-align: center;
+                font-size: 14px;
+            }
+
+            p {
+                margin-bottom: 10px;
+            }
+            
+            &:last-of-type {
+                background: $blue-text;
+                margin: 10px 0 0 5px;
+            }
+        }
+    }
+}
