@@ -51,10 +51,7 @@
              <div class="settings-item">
                 <p class="settings-title">Select Images</p>
                 <!-- <input type="file" name="" @change="onFileSelected"> -->
-                <form @submit.prevent="uploadFiles">
-                    Select images: <input type="file" @change="onFileSelected" name="image">
-                    <input type="submit" value="Upload your files"/>
-                </form>
+                <input type="file" @change="onFileSelected" name="image">
             </div>
         </div>
         <div class="sale-page-3" v-if="page === 3">
