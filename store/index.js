@@ -28,6 +28,9 @@ export const mutations = {
     setSales (state, payload) {
         state.sales = payload;
     },
+    addSale (state,payload) {
+        state.sales = [payload, ...state.sales];
+    },
     setBookmarks (state, payload) {
         state.bookmarks = payload;
     },
@@ -42,6 +45,12 @@ export const mutations = {
     removeBookmark (state, payload) {
         let i = state.bookmarks.map(bookmark => bookmark.bookmarkId).indexOf(payload.id);
         state.bookmarks.splice(i, 1);
+    }
+}
+
+export const getters = {
+    userLocationArray: state => {
+        return [state.position.longitude, state.position.latitude];
     }
 }
 
@@ -118,17 +127,46 @@ export const actions = {
                 })
         })       
     },
-    getSales({commit, context}, payload) {
+    getSales({commit, context, getters}, payload) {
         return new Promise ((resolve, reject) => {
             db.collection('sales').get().then((snapshot) => {
                 let data = []
+                let results = []
                 console.log(snapshot);
-                snapshot.docs.forEach((doc) => {
+                snapshot.docs.forEach((doc, index) => {
+                    let docData = doc.data()
+                    data.push({id: doc.id, ...docData})
 
-                    data.push({id: doc.id, ...doc.data()})
+                    if (index >= snapshot.docs.length - 1) {
+                        let userLoc = getters.userLocationArray
+                        let access_token = 'pk.eyJ1IjoibGxhbmc4IiwiYSI6ImNqeWY3MGU0NzAwYnEzbW84NXh4Znh1dGkifQ.S7lFIAyAgTWFYJtmtAiHrg';
+                        let saleLocs = data.map((sale) => {
+                            return [sale.geopoint[1], sale.geopoint[0]].join(',');
+                        })
+                        console.log(saleLocs);
+                        axios.get(`https://api.mapbox.com/directions-matrix/v1/mapbox/driving/${userLoc.join(',')};${saleLocs.join(';')}?access_token=${access_token}&sources=1`)
+                            .then((res) => {
+                                if (res.status == 200) {
+                                    console.log(res);
+                                    res.data.destinations.forEach((dest, index) => {  
+                                        if (index > 0) { 
+                                            results.push({
+                                                distance: dest.distance, /* Convert to miles */
+                                                ...data[index]
+                                            })
+                                        }
+                                        if (index == res.data.destinations.length - 1) {
+                                            console.log(results)
+                                            commit('setSales', results);
+                                            resolve();
+                                        }
+                                    })
+                                }
+                            })
+                        commit('setSales', data);
+                        resolve();
+                    }
                 })
-                commit('setSales', data);
-                resolve();
             })
 
             

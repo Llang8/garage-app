@@ -50,7 +50,11 @@
             </div>
              <div class="settings-item">
                 <p class="settings-title">Select Images</p>
-                <input type="file" name="" @change="onFileSelected">
+                <!-- <input type="file" name="" @change="onFileSelected"> -->
+                <form @submit.prevent="uploadFiles">
+                    Select images: <input type="file" @change="onFileSelected" name="image">
+                    <input type="submit" value="Upload your files"/>
+                </form>
             </div>
         </div>
         <div class="sale-page-3" v-if="page === 3">
@@ -77,7 +81,7 @@
             <button class="submit-sale" @click="submitSale()">Submit Sale</button>
         </div>
         <div class="create-sale__loading" v-if="savingSale">
-            Sending sale to our servers...
+            {{ savingSaleMessage }}
             <svg width="200px"  height="200px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-flickr" style="background: none;"><circle cy="50" cx="31.9638" fill="#fdfdfd" r="20"><animate attributeName="cx" calcMode="linear" values="30;70;30" keyTimes="0;0.5;1" dur="1" begin="-0.5s" repeatCount="indefinite"></animate></circle><circle cy="50" cx="68.0362" fill="#85a2b6" r="20"><animate attributeName="cx" calcMode="linear" values="30;70;30" keyTimes="0;0.5;1" dur="1" begin="0s" repeatCount="indefinite"></animate></circle><circle cy="50" cx="31.9638" fill="#fdfdfd" r="20"><animate attributeName="cx" calcMode="linear" values="30;70;30" keyTimes="0;0.5;1" dur="1" begin="-0.5s" repeatCount="indefinite"></animate><animate attributeName="fill-opacity" values="0;0;1;1" calcMode="discrete" keyTimes="0;0.499;0.5;1" repeatCount="indefinite" dur="1s"></animate></circle></svg>        </div>
     </div>
 </template>
@@ -96,6 +100,7 @@ export default {
             categories: [],
             dates: [{}],
             images: [],
+            files: [],
             imgPreviews: [],
             address: {
                 street: null,
@@ -105,6 +110,7 @@ export default {
                 state: null
             },
             savingSale: false,
+            savingSaleMessage: '',
             temporaryImages: ['https://picsum.photos/200','https://picsum.photos/200','https://picsum.photos/200','https://picsum.photos/200']
         }
     },
@@ -116,6 +122,8 @@ export default {
                 this.images.push(...event.target.files);
                 this.imgPreviews.push(window.URL.createObjectURL(event.target.files[0]))
             }
+        },
+        uploadFiles() {
         },
         removeImage(index) {
             this.images.splice(index, 1);
@@ -139,36 +147,53 @@ export default {
             } else {
                 this.savingSale = true;
                 let apiKey = 'AIzaSyD10tBIEsk0pFf1sn5igJmdyIuWTdMro8s';
-                console.log(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURI(this.address.street)}+${encodeURI(this.address.city)}+${encodeURI(this.address.state)}+${encodeURI(this.address.zipCode)}&key=${apiKey}`);
+
+                this.savingSaleMessage = '1/3 Getting sale location...';
+
                 axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURI(this.address.street)}+${encodeURI(this.address.city)}+${encodeURI(this.address.state)}+${encodeURI(this.address.zipCode)}&key=${apiKey}`)
                     .then((location) => {
-                        console.log(location)
-                        location = location.data.results[0].geometry.location
-                        db.collection('sales').add({
-                            categories: this.categories,
-                            city: this.address.city,
-                            dates: this.dates,
-                            description: this.description,
-                            geopoint: [location.lat,location.lng],
-                            images: this.temporaryImages,
-                            title: this.title,
-                            uid: this.$store.state.user.uid,
-                            state: this.address.state
-                        }).then((res) => {
-                            /* Rebuild app with new page */
-                            axios.post(`https://api.netlify.com/build_hooks/5dbcf05aaa2c1686b61767e4`)
-                            this.$router.push('mysales');
-                        }).catch((e) => {
-                            alert(e.message);
-                            this.savingSale = false;
+
+                        this.savingSaleMessage = '2/3 Uploading images...';
+
+                        let formData = new FormData();
+                        this.images.forEach((img) => {
+                            formData.append('images', img);
                         })
+                        axios.post('/uploadImages', 
+                            formData 
+                        ).then((res) => {
+                            console.log(res);
+                            this.images = res.data;
+                            this.savingSaleMessage = '3/3 Sending sale to our servers...';
+                            console.log(location)
+                            location = location.data.results[0].geometry.location
+                            db.collection('sales').add({
+                                categories: this.categories,
+                                city: this.address.city,
+                                dates: this.dates,
+                                description: this.description,
+                                geopoint: [location.lat,location.lng],
+                                images: this.images,
+                                title: this.title,
+                                uid: this.$store.state.user.uid,
+                                state: this.address.state
+                            }).then((res) => {
+                                /* Rebuild app with new page */
+                                axios.post(`https://api.netlify.com/build_hooks/5dbcf05aaa2c1686b61767e4`)
+                                this.$router.push('mysales');
+                            }).catch((e) => {
+                                console.log(e.message);
+                                this.savingSale = false;
+                            })
+                        })
+                        .catch(err => console.err(err));
                     })
                     .catch((e) => {
                         alert(e.message);
                         this.savingSale = false;
-                    })
+                    });
             }
-        }
+        },
     }
 }
 </script>

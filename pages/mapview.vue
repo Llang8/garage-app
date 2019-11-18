@@ -1,29 +1,31 @@
 <template>
     <div class="mapview">
       <!-- <div class="map-container" v-if="mapCreated"> -->
-        <MglMap 
-            class="map"
-            :accessToken="accessToken"
-            :mapStyle="mapStyle"
-            :center="mapCenter"
-            :zoom="mapZoom"
-            @load="mapLoad"
-        >
-<!--             <MarkerComponent
-                :color="markerColor",
-                :coordinates="markerCoordinates"
-            /> -->
-          <MglMarker
-            :coordinates.sync="mapCenterArr"
-            color="blue"
-          />
-          <MglMarker
-            v-for="(sale,index) in salesPositions" :key="index"
-            @click="setSale(index)"
-            :coordinates.sync="sale"
-            color="green"
-          />
-        </MglMap>
+        <client-only>
+          <MglMap 
+              class="map"
+              :accessToken="accessToken"
+              :mapStyle="mapStyle"
+              :center="mapCenter"
+              :zoom="mapZoom"
+              @load="mapLoad"
+          >
+  <!--             <MarkerComponent
+                  :color="markerColor",
+                  :coordinates="markerCoordinates"
+              /> -->
+            <MglMarker
+              :coordinates.sync="mapCenterArr"
+              color="blue"
+            />
+            <MglMarker
+              v-for="(sale,index) in salesPositions" :key="index"
+              @click="setSale(index)"
+              :coordinates.sync="sale"
+              color="green"
+            />
+          </MglMap>
+        </client-only>
         <div class="current-sale" v-if="currSale">
           <div class="img-carousel">
             <img v-for="(image, index) in currSale.images" :key="index" :src="image" alt="currSale.title">
