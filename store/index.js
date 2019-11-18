@@ -132,7 +132,6 @@ export const actions = {
             db.collection('sales').get().then((snapshot) => {
                 let data = []
                 let results = []
-                console.log(snapshot);
                 snapshot.docs.forEach((doc, index) => {
                     let docData = doc.data()
                     data.push({id: doc.id, ...docData})
@@ -143,20 +142,17 @@ export const actions = {
                         let saleLocs = data.map((sale) => {
                             return [sale.geopoint[1], sale.geopoint[0]].join(',');
                         })
-                        console.log(saleLocs);
                         axios.get(`https://api.mapbox.com/directions-matrix/v1/mapbox/driving/${userLoc.join(',')};${saleLocs.join(';')}?access_token=${access_token}&sources=1`)
                             .then((res) => {
                                 if (res.status == 200) {
-                                    console.log(res);
                                     res.data.destinations.forEach((dest, index) => {  
                                         if (index > 0) { 
                                             results.push({
                                                 distance: dest.distance, /* Convert to miles */
-                                                ...data[index]
+                                                ...data[index - 1]
                                             })
                                         }
-                                        if (index == res.data.destinations.length - 1) {
-                                            console.log(results)
+                                        if (index >= res.data.destinations.length - 1) {
                                             commit('setSales', results);
                                             resolve();
                                         }
