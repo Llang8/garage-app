@@ -156,7 +156,7 @@ export default {
                         this.images.forEach((img) => {
                             formData.append('images', img);
                         })
-                        axios.post('/uploadImages', 
+                        axios.post('https://garage-app-node.herokuapp.com/uploadImages', 
                             formData 
                         ).then((res) => {
                             console.log(res);
@@ -183,7 +183,10 @@ export default {
                                 this.savingSale = false;
                             })
                         })
-                        .catch(err => console.err(err));
+                        .catch(err => {
+                            console.error(err)
+                            this.savingSale = false;
+                        });
                     })
                     .catch((e) => {
                         alert(e.message);
