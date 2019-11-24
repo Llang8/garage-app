@@ -108,7 +108,6 @@ export default {
             },
             savingSale: false,
             savingSaleMessage: '',
-            temporaryImages: ['https://picsum.photos/200','https://picsum.photos/200','https://picsum.photos/200','https://picsum.photos/200']
         }
     },
     methods: {
@@ -136,7 +135,6 @@ export default {
             this.dates.splice(index, 1);
         },
         submitSale() {
-            console.log('TEST');
             if (this.address.street == null || this.address.city == null || 
                 this.address.zipCode == null || this.address.state == null) {
                 

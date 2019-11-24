@@ -26,21 +26,24 @@
         <div class="settings-item settings-categories">
             <p class="settings-title">Categories</p>
             <div class="categories">
-                <div class="settings-category">
-                    <p class="category-name">Bikes</p>
-                    <p class="delete-category">X</p>
-                </div>
-                <div class="settings-category">
-                    <p class="category-name">Clothing</p>
-                    <p class="delete-category">X</p>
-                </div>
-                <div class="settings-category">
-                    <p class="category-name">Toys</p>
-                    <p class="delete-category">X</p>
+                <div v-for="(category, index) in checkedCategories" class="settings-category">
+                    <p class="category-name">{{ category.name }}</p>
+                    <p class="delete-category" @click="removeCategory(category)">X</p>
                 </div>
             </div>
-            
-            <button>+ Add Category</button>
+            <button @click="addCategory()">+ Add Categories</button>
+        </div>
+        <div class="settings-categories_modal" v-if="showCategoryPicker">
+            <div class="close-button" @click="showCategoryPicker = false">X</div>
+            <h2>Select Categories:</h2>
+            <div class="category-picker">
+                <ul class="category-selection">
+                    <li v-for="category in categories">
+                        <input type="checkbox" :name="category.name" v-model="category.checked" :id="category.name">
+                        <label :for="category.name">{{category.name}}</label>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div class="settings-apply">
             <div class="settings-item">
@@ -58,13 +61,59 @@ export default {
     },
     data() {
         return {
-            distance: 50
+            distance: 50,
+            categories: [{
+                name: 'Clothes',
+                checked: false
+            },{
+                name: 'Toys',
+                checked: false
+            },{
+                name: 'Kids Clothes',
+                checked: false
+            },{
+                name: 'Shoes',
+                checked: false
+            },{
+                name: 'Video Games',
+                checked: false
+            },{
+                name: 'Paintings',
+                checked: false
+            },{
+                name: 'Pants',
+                checked: false
+            },{
+                name: 'Collectibles',
+                checked: false
+            },{
+                name: 'Cars',
+                checked: false
+            },{
+                name: 'Books',
+                checked: false
+            },{
+                name: 'Board Games',
+                checked: false
+            }],
+            showCategoryPicker: false
+        }
+    },
+    computed: {
+        checkedCategories() {
+            return this.categories.filter((category) => {
+                return category.checked;
+            })
+        }
+    },
+    methods: {
+        addCategory() {
+            this.showCategoryPicker = true;
+        },
+        removeCategory(category) {
+            category.checked = false;
         }
     }
 }
 
 </script>
-
-<style>
-
-</style>
