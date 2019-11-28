@@ -5,6 +5,7 @@
         <input v-model="password" type="password" placeholder="Password">
         <button @click="login()">Login</button>
         <p>Dont have an account? <nuxt-link to="/register">Register Here</nuxt-link></p>
+        <p><a href="javascript:void(0)" @click="sendPasswordReset()">Forgot your password?</a></p>
     </div>
 </template>
 
@@ -27,6 +28,15 @@ export default {
             }).catch((e) => {
                 alert(e.message);
             });
+        },
+        sendPasswordReset() {
+            let email = prompt('Please enter your email: ');
+            this.$store.dispatch('sendPasswordReset', {
+                email: email
+            })
+            .then(() => {
+                alert('Password reset sent to: ' + email);
+            })
         }
     }
 }

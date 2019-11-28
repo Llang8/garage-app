@@ -321,7 +321,7 @@
     height: 200px;
     margin: 0px 2px 2px;
     padding: 5px 25px;
-    border-radius: 25px;
+    border-radius: 25px 25px 0 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -347,16 +347,6 @@
         overflow: auto;
         position: relative;
 
-/*         &:after {
-            content: '';
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            top: 0;
-            left: 0;
-            background: linear-gradient(white, transparent 30%, transparent 70%, white);
-        } */
-
         li {
             position: relative;
             margin: 3px 0;
@@ -366,7 +356,7 @@
             label {
                 display: block;
                 margin: 0;
-                padding: 2px 5px;
+                padding: 5px 5px;
             }
 
             input {
@@ -377,10 +367,20 @@
             input:checked ~ label {
                 display: block;
                 width: calc(100%);
-                padding: 0px 5px;
+                padding: 3px 5px;
                 background-color: rgb(226, 241, 251); 
                 border: 2px solid $main-blue;
             }
         }
+    }
+    input[type="text"] {
+        padding: 10px;
+        color: $blue-text;
+        border: 0;
+        border-radius: 5px;
+        background-color: rgb(226, 241, 251);
+        margin: 5px 0;
+        font-size: 16px;
+        font-weight: 400;
     }
 }

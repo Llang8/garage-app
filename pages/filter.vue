@@ -3,7 +3,7 @@
         <h1 class="settings-page-title">Filter</h1>
         <div class="settings-item settings-edit">
             <p>Chicago, Illinois</p>
-            <p>Edit</p>
+            <p @click="changeLocation()">Edit</p>
         </div>
         <div class="settings-item settings-distance">
             <p class="settings-title">Distance</p>
@@ -19,9 +19,9 @@
                 <input v-model="distance" type="range" min="1" max="100" value="50" class="settings-slider" id="distance-slider">
             </div>
         </div>
-        <div class="settings-item">
+        <div class="settings-item" @click="changeSort">
             <p class="settings-title">Sort By</p>
-            <p>Distance</p>
+            <p>{{ sortBy }}</p>
         </div>
         <div class="settings-item settings-categories">
             <p class="settings-title">Categories</p>
@@ -45,6 +45,36 @@
                 </ul>
             </div>
         </div>
+        <div class="settings-categories_modal" v-if="showCategoryPicker">
+            <div class="close-button" @click="showCategoryPicker = false">X</div>
+            <h2>Select Categories:</h2>
+            <div class="category-picker">
+                <ul class="category-selection">
+                    <li v-for="category in categories">
+                        <input type="checkbox" :name="category.name" v-model="category.checked" :id="category.name">
+                        <label :for="category.name">{{category.name}}</label>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="settings-categories_modal" v-if="showLocationEditor">
+            <div class="close-button" @click="showLocationEditor = false">X</div>
+            <h2>Choose City:</h2>
+            <input type="text" name="City" v-model="cityInput" @change="getPlaceSuggestion()" id="city" placeholder="City...">
+            <input type="text" name="State" v-model="stateInput" @change="getPlaceSuggestion()" id="state" placeholder="State...">
+        </div>
+        <div class="settings-categories_modal" v-if="showSortPicker">
+            <div class="close-button" @click="showSortPicker = false">X</div>
+            <h2>Choose Sort Method:</h2>
+            <div class="category-picker">
+                <ul class="category-selection">
+                    <li v-for="sort in sorts">
+                        <input type="radio" name="sort" v-model="sortBy" :id="sort" :value="sort">
+                        <label :for="sort">{{sort}}</label>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <div class="settings-apply">
             <div class="settings-item">
                 <p>Apply Changes</p>
@@ -54,6 +84,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 
 export default {
     layout: 'settings',
@@ -86,17 +117,16 @@ export default {
             },{
                 name: 'Collectibles',
                 checked: false
-            },{
-                name: 'Cars',
-                checked: false
-            },{
-                name: 'Books',
-                checked: false
-            },{
-                name: 'Board Games',
-                checked: false
             }],
-            showCategoryPicker: false
+            sorts: ['Distance', 'Day: Soonest to Furthest', 'Day: Furthest to Soonest', 'Newest'],
+            sortBy: 'Distance',
+            showCategoryPicker: false,
+            showLocationEditor: false,
+            showSortPicker: false,
+            cityInput: '',
+            stateInput: '',
+            placeSuggestions: [],
+            sessionToken: Math.floor((Math.random() * 99999999999))
         }
     },
     computed: {
@@ -109,9 +139,29 @@ export default {
     methods: {
         addCategory() {
             this.showCategoryPicker = true;
+            this.showLocationEditor = false;
+            this.showSortPicker = false;
+        },
+        changeLocation() {
+            this.showCategoryPicker = false;
+            this.showLocationEditor = true;
+            this.showSortPicker = false;
+        },
+        changeSort() {
+            this.showCategoryPicker = false;
+            this.showLocationEditor = false;
+            this.showSortPicker = true;
         },
         removeCategory(category) {
             category.checked = false;
+        },
+        getPlaceSuggestion() {
+            let apiKey = 'AIzaSyD10tBIEsk0pFf1sn5igJmdyIuWTdMro8s';
+            let input = encodeURI(this.cityInput + ' ' + this.stateInput);
+            axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&key=${apiKey}&sessionToken=${this.sessionToken}`)
+                .then((res) => {
+                    console.log(res);
+                })
         }
     }
 }
