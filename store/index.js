@@ -225,7 +225,7 @@ export const actions = {
     getPlaceSuggestions({commit, context}, payload) {
         return new Promise ((resolve, reject) => {
             let apiKey = 'AIzaSyD10tBIEsk0pFf1sn5igJmdyIuWTdMro8s';
-            let input = encodeURI(this.cityInput + ' ' + this.stateInput);
+            let input = encodeURI(payload.cityInput + ' ' + payload.stateInput);
             axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&key=${apiKey}&sessionToken=${this.sessionToken}`)
                 .then((res) => {
                     console.log(res);

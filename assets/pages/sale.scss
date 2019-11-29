@@ -66,14 +66,18 @@
     .sale-buttons {
         display: flex;
         justify-content: center;
+        flex-wrap: wrap;
 
-        button {
+        button, a {
             margin: 0 10px;
             padding: 10px 15px;
+            font-size: 12px;
             background-color: $blue-text;
             border: 0;
-            border-radius: 5px;
+            border-radius: 50px;
             color: white;
+            text-decoration: none;
+            font-weight: 500;
         }
     }
 }

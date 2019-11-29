@@ -104,7 +104,13 @@ export default {
     },
     mapCenter() {
       console.log(this.$store.state.position);
-      if(this.$store.state.position) {
+      if(this.$route.query.lat && this.$route.query.lng) {
+        return {
+          lat: this.$route.query.lat,
+          lng: this.$route.query.lng,
+        }
+      }
+      else if(this.$store.state.position) {
         return {
           lat: this.$store.state.position.latitude,
           lng: this.$store.state.position.longitude,
@@ -117,6 +123,7 @@ export default {
       }
     },
     mapCenterArr() {
+      console.log([this.mapCenter.lng,this.mapCenter.lat]);
       return [this.mapCenter.lng,this.mapCenter.lat];
     },
     salesPositions() {

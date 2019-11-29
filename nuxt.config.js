@@ -15,6 +15,7 @@ module.exports = {
       { href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css',  rel:'stylesheet' }
     ],
     script: [
+      { type: 'text/javascript', src: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyD10tBIEsk0pFf1sn5igJmdyIuWTdMro8s&libraries=places'}
     ]
   },
   /*

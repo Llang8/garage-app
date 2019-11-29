@@ -37,7 +37,7 @@
         </div>
         <div class="sale-buttons">
             <button @click="openMaps(sale)">Get Directions</button>
-            <button>Show on Map</button>
+            <nuxt-link :to="{ path: '/mapview', query: { lat: sale.geopoint[0], lng: sale.geopoint[1] }}">Show on Map</nuxt-link>
         </div>
     </div>
 </template>

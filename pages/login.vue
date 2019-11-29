@@ -1,8 +1,8 @@
 <template>
     <div class="login-layout">
         <h1>GarageApp</h1>
-        <input v-model="email" type="text" placeholder="Email">
-        <input v-model="password" type="password" placeholder="Password">
+        <input v-model="email" type="text" placeholder="Email" @keyup.enter="login()">
+        <input v-model="password" type="password" placeholder="Password" @keyup.enter="login()">
         <button @click="login()">Login</button>
         <p>Dont have an account? <nuxt-link to="/register">Register Here</nuxt-link></p>
         <p><a href="javascript:void(0)" @click="sendPasswordReset()">Forgot your password?</a></p>

@@ -156,12 +156,11 @@ export default {
             category.checked = false;
         },
         getPlaceSuggestion() {
-            let apiKey = 'AIzaSyD10tBIEsk0pFf1sn5igJmdyIuWTdMro8s';
-            let input = encodeURI(this.cityInput + ' ' + this.stateInput);
-            axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&key=${apiKey}&sessionToken=${this.sessionToken}`)
-                .then((res) => {
-                    console.log(res);
-                })
+/*             this.$store.dispatch('getPlaceSuggestions', {
+                city: this.cityInput,
+                state: this.stateInput
+            }) */
+            let service = google.maps.places.PlacesService()
         }
     }
 }
