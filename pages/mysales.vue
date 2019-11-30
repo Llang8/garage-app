@@ -1,7 +1,10 @@
 <template>
     <div class="mysales">
         <div class="flex-row">
-            <nuxt-link to="/createsale">Create a Sale</nuxt-link>
+            <nuxt-link to="/createsale" class="create-sale">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon icon-add-circle"><circle cx="12" cy="12" r="10" class="primary"/><path class="secondary" d="M13 11h4a1 1 0 0 1 0 2h-4v4a1 1 0 0 1-2 0v-4H7a1 1 0 0 1 0-2h4V7a1 1 0 0 1 2 0v4z"/></svg>
+                Create a Sale
+            </nuxt-link>
         </div>
         <div v-if="sales.length == 0">
             <p>You have no sales yet</p>
@@ -18,7 +21,6 @@
                 <h2 class="sale-town">{{ sale.city }}</h2>
                 <p class="sale-description">{{ sale.description.substring(0, 300) }}...</p>
                 <p class="categories"><strong>Categories:</strong><span v-for="(category, index) in sale.categories"> {{ category }}</span></p>
-                 <hr />
             </div>
         </div>
     </div>

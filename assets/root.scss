@@ -1,17 +1,48 @@
 /* Variables */
-$main-blue: #39A0ED;
-$blue-text: #4C6085;
+
+/* Blues */
+$main-blue: hsl(212, 92%, 43%);
+$dark-blue-1:hsl(214, 95%, 36%);
+$dark-blue-2: hsl(215, 96%, 32%);
+$dark-blue-3: hsl(216, 98%, 25%);
+$dark-blue-4: hsl(218, 100%, 17%);
+$light-blue-1: hsl(210, 83%, 53%);
+$light-blue-2: hsl(208, 88%, 62%);
+$light-blue-3: hsl(206, 93%, 73%);
+$light-blue-4: hsl(204, 100%, 86%);
+$light-blue-5: hsl(202, 100%, 95%);
+
+/* Neutrals */
+$cool-grey-1: hsl(210, 24%, 16%);
+$cool-grey-2: hsl(209, 20%, 25%);
+$cool-grey-3: hsl(209, 18%, 30%);
+$cool-grey-4: hsl(209, 14%, 37%);
+$cool-grey-5: hsl(211, 12%, 43%);
+$cool-grey-6: hsl(211, 10%, 53%);
+$cool-grey-7: hsl(211, 13%, 65%);
+$cool-grey-8: hsl(210, 16%, 82%);
+$cool-grey-9: hsl(214, 15%, 91%);
+$cool-grey-10: hsl(216, 33%, 97%);
+
+$grey-background: $cool-grey-10;
+$blue-background: $main-blue;
+
+$blue-text: $dark-blue-3;
+$heading-text: $cool-grey-10;
+$light-blue-text: $dark-blue-2;
 
 $white: #ffffff;
 
 /* Imports */
 @import './components/nav.scss';
+@import './components/icons.scss';
 @import './pages/settings.scss';
 @import './pages/sale.scss';
 @import './pages/index.scss';
 @import './pages/bookmarks.scss';
 @import './pages/mapview.scss';
 @import './pages/createsale.scss';
+@import './pages/mysales.scss';
 
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Red+Hat+Text:700&display=swap');
@@ -19,8 +50,13 @@ $white: #ffffff;
 body {
     margin-top: 50px;
     font-family: 'Red Hat Text', sans-serif;
+    background-color: $white;
 }
 
 button {
     font-family: 'Red Hat Text', sans-serif;
+}
+
+p {
+    line-height: 1.5;
 }

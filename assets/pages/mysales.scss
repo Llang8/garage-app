@@ -1,0 +1,23 @@
+.mysales {
+    .results-container {
+        padding-top: 0;
+    }
+
+    .create-sale {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        background: $light-blue-text;
+        border-radius: 20px;
+        padding: 5px 10px 5px 5px;
+        color: white;
+        position: fixed;
+        right: 10px;
+        bottom: 10px;
+        z-index: 1;
+
+        svg {
+            margin-right: 5px;
+        }
+    }
+}
