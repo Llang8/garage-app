@@ -75,9 +75,30 @@ input[type=text] {
     border: 1px solid $cool-grey-9;
 }
 
+.btn {
+    border-radius: 20px;
+    padding: 7px 10px;
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 12px;
+    margin: 0 5px;
+
+    &.btn-primary {
+        color: white;
+        background: $cool-grey-5;
+    }
+
+    &.btn-secondary {
+        background: white;
+        color: $cool-grey-5;
+        border: 1px solid $cool-grey-5;
+    }
+}
+
 /* Imports */
 @import './components/nav.scss';
 @import './components/icons.scss';
+@import './components/sidebar.scss';
 @import './pages/settings.scss';
 @import './pages/sale.scss';
 @import './pages/index.scss';

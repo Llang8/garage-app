@@ -35,8 +35,28 @@
           <h2 class="sale-title">{{ sale.title }}</h2>
         </nuxt-link>
         <h3 class="sale-town">{{ sale.city }}, {{ sale.state }}</h3>
-        <p class="sale-description" v-if="sale.description">{{ sale.description.substring(0, 300) }}...</p>
-        <p class="categories"><strong>Categories:</strong><span v-for="(category, index) in sale.categories"> {{ category }}</span></p> 
+        <p class="sale-description" v-if="sale.description">{{ sale.description.substring(0, 200) }}...</p>
+        <div class="sale-buttons">
+          <nuxt-link
+            :to="{name:'sale-id', params: {id: sale.id}}"
+            class="btn btn-primary"
+          >
+            See More
+          </nuxt-link>
+          <nuxt-link
+            :to="{name:'sale-id', params: {id: sale.id}}"
+            class="btn btn-secondary"
+          >
+            Open Map
+          </nuxt-link>
+          <nuxt-link
+            :to="{name:'sale-id', params: {id: sale.id}}"
+            class="btn btn-secondary"
+          >
+          Get Directions
+        </nuxt-link>
+        </div>
+        <p class="categories"><span class="categories-label">Categories:</span><br /><span v-for="(category, index) in sale.categories" class="category"> {{ category }}</span></p> 
         <p class="distance"><span class="distance-value">{{ Math.floor(Math.random() * 26) }}</span> Miles</p>
       </div>
     </div>
