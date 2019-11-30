@@ -98,7 +98,6 @@ export default {
 
     .sidebar-top {
         background: $main-blue;
-        color: white;
         height: 70px;
         padding: 10px;
         display: flex;
@@ -109,6 +108,7 @@ export default {
             font-size: 24px;
             font-style: normal;
             font-weight: bold;
+            color: white !important;
         }
 
         h2 {

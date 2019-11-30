@@ -28,10 +28,52 @@ $grey-background: $cool-grey-10;
 $blue-background: $main-blue;
 
 $blue-text: $dark-blue-3;
-$heading-text: $cool-grey-10;
 $light-blue-text: $dark-blue-2;
 
+$h1: $cool-grey-1;
+$h2: $cool-grey-2;
+$h3: $cool-grey-3;
+
 $white: #ffffff;
+
+/* Global Styles */
+body {
+    margin-top: 50px;
+    font-family: 'Red Hat Text', sans-serif;
+    background-color: $grey-background;
+}
+
+button {
+    font-family: 'Red Hat Text', sans-serif;
+}
+
+p {
+    line-height: 1.5;
+    font-size: 12px;
+}
+
+h1 {
+    color: $h1;
+    line-height: 1.125;
+    font-size: 18px;
+}
+
+h2 {
+    color: $h2;
+    line-height: 1.25;
+    font-size: 16px;
+}
+
+h3 {
+    color: $h3;
+    line-height: 1.35;
+    font-size: 14px;
+}
+
+input[type=text] {
+    background-color: $cool-grey-10;
+    border: 1px solid $cool-grey-9;
+}
 
 /* Imports */
 @import './components/nav.scss';
@@ -46,17 +88,3 @@ $white: #ffffff;
 
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Red+Hat+Text:700&display=swap');
-/* Global Styles */
-body {
-    margin-top: 50px;
-    font-family: 'Red Hat Text', sans-serif;
-    background-color: $white;
-}
-
-button {
-    font-family: 'Red Hat Text', sans-serif;
-}
-
-p {
-    line-height: 1.5;
-}

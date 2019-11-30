@@ -32,12 +32,12 @@
         <nuxt-link 
           :to="{name:'sale-id', params: {id: sale.id}}"
         >
-          <h1 class="sale-title">{{ sale.title }}</h1>
+          <h2 class="sale-title">{{ sale.title }}</h2>
         </nuxt-link>
-        <h2 class="sale-town">{{ sale.city }}, {{ sale.state }}</h2>
+        <h3 class="sale-town">{{ sale.city }}, {{ sale.state }}</h3>
         <p class="sale-description" v-if="sale.description">{{ sale.description.substring(0, 300) }}...</p>
         <p class="categories"><strong>Categories:</strong><span v-for="(category, index) in sale.categories"> {{ category }}</span></p> 
-        <h3 class="distance">{{ Math.floor(Math.random() * 26) }} Miles</h3>
+        <p class="distance"><span class="distance-value">{{ Math.floor(Math.random() * 26) }}</span> Miles</p>
       </div>
     </div>
   </div>
@@ -124,7 +124,7 @@ export default {
 <style lang="scss">
 @import '../assets/root.scss';
 
-.st0{fill-rule:evenodd;clip-rule:evenodd;fill:#4C6085;}
-.st1{fill:#4C6085;}
+.st0{fill-rule:evenodd;clip-rule:evenodd;fill:hsl(215, 96%, 32%);}
+.st1{fill:hsl(215, 96%, 32%);}
 
 </style>
