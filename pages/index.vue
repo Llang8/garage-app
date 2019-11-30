@@ -44,17 +44,18 @@
             See More
           </nuxt-link>
           <nuxt-link
-            :to="{name:'sale-id', params: {id: sale.id}}"
+            :to="{ path: '/mapview', query: { lat: sale.geopoint[0], lng: sale.geopoint[1] }}"
             class="btn btn-secondary"
           >
             Open Map
           </nuxt-link>
-          <nuxt-link
-            :to="{name:'sale-id', params: {id: sale.id}}"
+          <a
+            to="javascript:void(0)"
+            @click="openMaps(sale)"
             class="btn btn-secondary"
           >
-          Get Directions
-        </nuxt-link>
+            Get Directions
+          </a>
         </div>
         <p class="categories"><span class="categories-label">Categories:</span><br /><span v-for="(category, index) in sale.categories" class="category"> {{ category }}</span></p> 
         <p class="distance"><span class="distance-value">{{ Math.floor(Math.random() * 26) }}</span> Miles</p>
@@ -136,7 +137,21 @@ export default {
     },
     searchSales() {
       console.log(this.search);
-    }
+    },
+    openMaps(sale) {
+        let lat = sale.geopoint[0];
+        let lng = sale.geopoint[1];
+        /* if we're on iOS, open in Apple Maps */
+        if
+            ((navigator.platform.indexOf("iPhone") != -1) || 
+            (navigator.platform.indexOf("iPad") != -1) || 
+            (navigator.platform.indexOf("iPod") != -1)) {
+            window.open(`maps://maps.google.com/maps?daddr=${lat},${lng}&amp;ll=`);
+        /* else use Google */
+        } else {
+            window.open(`https://maps.google.com/maps?daddr=${lat},${lng}&amp;ll=`);
+        }
+    },
   }
 }
 </script>
