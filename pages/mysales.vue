@@ -14,12 +14,12 @@
             <div class="result" v-for="(sale, index) in sales">
                 <img :src="sale.images[0]" :alt="sale.title">
                 <nuxt-link 
-                :to="{name:'sale-id', params: {id: sale.id}}"
+                    :to="{name:'sale-id', params: {id: sale.id}}"
                 >
-                <h1 class="sale-title">{{ sale.title }}</h1>
+                    <h2 class="sale-title">{{ sale.title }}</h2>
                 </nuxt-link>
-                <h2 class="sale-town">{{ sale.city }}</h2>
-                <p class="sale-description">{{ sale.description.substring(0, 300) }}...</p>
+                <h3 class="sale-town">{{ sale.city }}</h3>
+                <p class="sale-description">{{ sale.description.substring(0, 200) }}...</p>
                 <p class="categories"><strong>Categories:</strong><span v-for="(category, index) in sale.categories"> {{ category }}</span></p>
             </div>
         </div>

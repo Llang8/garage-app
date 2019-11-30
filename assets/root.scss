@@ -82,6 +82,7 @@ input[type=text] {
     font-weight: 800;
     font-size: 12px;
     margin: 0 5px;
+    text-decoration: none;
 
     &.btn-primary {
         color: white;
@@ -92,6 +93,25 @@ input[type=text] {
         background: white;
         color: $cool-grey-5;
         border: 1px solid $cool-grey-5;
+    }
+}
+
+table {
+    text-align: left;
+    margin: 0 auto;
+    border-collapse: collapse;
+    border: 0;
+
+    th {
+        background: $cool-grey-6;
+    }
+
+    tr:nth-child(even) {
+        background-color: $cool-grey-9;
+    }
+        
+    td, th {
+        padding: 5px;
     }
 }
 

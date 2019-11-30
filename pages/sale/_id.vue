@@ -28,16 +28,16 @@
                         <th>To</th>
                     </tr>
                     <tr v-for="(date, index) in sale.dates">
-                        <td>{{ date.date }}</td>
-                        <td>{{ date.from }}</td>
-                        <td>{{ date.to }}</td>
+                        <td>{{ months[parseInt(date.date.split('-')[1]) - 1] }} {{ date.date.split('-')[2] }}{{nth(date.date.split('-')[2])}}, {{ date.date.split('-')[0] }}</td>
+                        <td>{{ parseTime(date.from) }}</td>
+                        <td>{{ parseTime(date.to) }}</td>
                     </tr>
                 </table>
             </div>
         </div>
         <div class="sale-buttons">
-            <button @click="openMaps(sale)">Get Directions</button>
-            <nuxt-link :to="{ path: '/mapview', query: { lat: sale.geopoint[0], lng: sale.geopoint[1] }}">Show on Map</nuxt-link>
+            <button @click="openMaps(sale)" class="btn btn-secondary">Get Directions</button>
+            <nuxt-link :to="{ path: '/mapview', query: { lat: sale.geopoint[0], lng: sale.geopoint[1] }}" class="btn btn-primary">Show on Map</nuxt-link>
         </div>
     </div>
 </template>
@@ -65,7 +65,8 @@ export default {
     },
     data() {
         return {
-            sale: null
+            sale: null,
+            months: ['January','February','March','April','May','June','July','August','September','October','November','December']
         }
     },
     methods: {
@@ -81,6 +82,26 @@ export default {
             /* else use Google */
             } else {
                 window.open(`https://maps.google.com/maps?daddr=${lat},${lng}&amp;ll=`);
+            }
+        },
+        nth(d) {
+            if (d > 3 && d < 21) return 'th';
+            switch (d % 10) {
+                case 1:  return "st";
+                case 2:  return "nd";
+                case 3:  return "rd";
+                default: return "th";
+            }
+        },
+        parseTime(time) {
+            let hour = parseInt(time.split(':')[0]);
+            if (hour == 12) {
+                return time + ' PM';
+            }
+            else if (hour > 12) {
+                return hour - 12 + ':' + time.split(':')[1] + ' PM';
+            } else {
+                return time + ' AM';
             }
         }
     }
