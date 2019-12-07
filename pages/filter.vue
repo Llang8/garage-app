@@ -75,7 +75,7 @@
             </div>
         </div>
         <div class="settings-apply">
-            <div class="settings-item">
+            <div class="settings-item" @click="setFilterSettings()">
                 <p>Apply Changes</p>
             </div>
         </div>
@@ -126,6 +126,7 @@ export default {
             stateInput: '',
             placeSuggestions: [],
             autocomplete: '',
+            location: 'Chicago, Illinois',
             sessionToken: Math.floor((Math.random() * 99999999999))
         }
     },
@@ -135,13 +136,16 @@ export default {
             { type: ['cities'] }
         );
         this.autocomplete.addListener('place_changed', this.onPlaceChanged); */
+        this.sortBy = this.$store.state.filterSettings.sortBy;
+        this.location = this.$store.state.filterSettings.location;
     },
     computed: {
         checkedCategories() {
             return this.categories.filter((category) => {
                 return category.checked;
             })
-        }
+        },
+        
     },
     methods: {
         addCategory() {
@@ -164,6 +168,14 @@ export default {
         },
         onPlaceChanged() {
             console.log(this.autocomplete.getPlace());
+        },
+        setFilterSettings() {
+            this.$store.commit('setFilterSettings', {
+                location: this.location,
+                distance: this.distance,
+                sortBy: this.sortBy,
+                categories: [...this.checkedCategories]
+            })
         }
     }
 }

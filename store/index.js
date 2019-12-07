@@ -10,7 +10,7 @@ export const state = () => ({
     filterSettings: {
         location: 'Chicago, Illinois',
         distance: 50,
-        sortBy: 'distance',
+        sortBy: 'Distance',
         categories: []
     },
     position: null,
@@ -45,12 +45,18 @@ export const mutations = {
     removeBookmark (state, payload) {
         let i = state.bookmarks.map(bookmark => bookmark.bookmarkId).indexOf(payload.id);
         state.bookmarks.splice(i, 1);
+    },
+    setFilterSettings(state, payload) {
+        state.filterSettings = payload;
     }
 }
 
 export const getters = {
     userLocationArray: state => {
         return [state.position.longitude, state.position.latitude];
+    },
+    sortBy: state => {
+        return state.filterSettings.sortBy;
     }
 }
 
@@ -155,14 +161,34 @@ export const actions = {
                                 res.rows[0].elements.forEach((dest, index) => {  
                                     
                                     results.push({
-                                        distance: dest.distance.text,
+                                        distance: {
+                                            text: dest.distance.text,
+                                            value: dest.distance.value
+                                        },
                                         ...data[index]
                                     })
-                                    if (index >= res.rows[0].elements.length - 1) {
-                                        commit('setSales', results);
-                                        resolve();
+                                })
+
+                                results = results.sort((a, b) => {
+                                    
+                                    console.log(getters.sortBy);
+                                    if(getters.sortBy === 'Distance') {
+                                        if(a.distance.value > b.distance.value) {
+                                            return 1;
+                                        } else if (a.distance.value < b.distance.value) {
+                                            return -1;
+                                        } else {
+                                            return 0;
+                                        }
+                                    } else if (getters.sortBy === 'Day: Soonest to Furthest') {
+                                        return new Date(b.dates[0].date) - new Date(a.dates[0].date);
+                                    } else if (getters.sortBy === 'Day: Furthest to Soonest') {
+                                        return new Date(a.dates[0].date) - new Date(b.dates[0].date);
                                     }
                                 })
+                                console.log('TEST OVER')
+                                commit('setSales', results);
+                                resolve();
                             });
                         commit('setSales', data);
                         resolve();

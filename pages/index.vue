@@ -58,7 +58,7 @@
           </a>
         </div>
         <p class="categories"><span class="categories-label">Categories:</span><br /><span v-for="(category, index) in sale.categories" class="category"> {{ category }}</span></p> 
-        <p class="distance"><span class="distance-value">{{ sale.distance }}</span></p>
+        <p class="distance" v-if="sale.distance"><span class="distance-value">{{ sale.distance.text.split(' ')[0] }}</span> {{ sale.distance.text.split(' ')[1] }}</p>
       </div>
     </div>
   </div>
