@@ -137,28 +137,33 @@ export const actions = {
                     data.push({id: doc.id, ...docData})
 
                     if (index >= snapshot.docs.length - 1) {
-                        let userLoc = getters.userLocationArray
-                        let access_token = 'pk.eyJ1IjoibGxhbmc4IiwiYSI6ImNqeWY3MGU0NzAwYnEzbW84NXh4Znh1dGkifQ.S7lFIAyAgTWFYJtmtAiHrg';
+                        let userLoc = new google.maps.LatLng(getters.userLocationArray[1], getters.userLocationArray[0])
+                        let access_token = 'AIzaSyD10tBIEsk0pFf1sn5igJmdyIuWTdMro8s';
                         let saleLocs = data.map((sale) => {
-                            return [sale.geopoint[1], sale.geopoint[0]].join(',');
+                            return new google.maps.LatLng(sale.geopoint[0], sale.geopoint[1]);
                         })
-                        axios.get(`https://api.mapbox.com/directions-matrix/v1/mapbox/driving/${userLoc.join(',')};${saleLocs.join(';')}?access_token=${access_token}&sources=1`)
-                            .then((res) => {
-                                if (res.status == 200) {
-                                    res.data.destinations.forEach((dest, index) => {  
-                                        if (index > 0) { 
-                                            results.push({
-                                                distance: dest.distance, /* Convert to miles */
-                                                ...data[index - 1]
-                                            })
-                                        }
-                                        if (index >= res.data.destinations.length - 1) {
-                                            commit('setSales', results);
-                                            resolve();
-                                        }
+                        /* axios.get(`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${userLoc.join(',')}&destinations=${saleLocs.join(';')}&key=${access_token}`)
+                         */let service = new google.maps.DistanceMatrixService();
+                        service.getDistanceMatrix(
+                            {
+                              origins: [userLoc],
+                              destinations: [...saleLocs],
+                              travelMode: 'DRIVING',
+                              unitSystem: google.maps.UnitSystem.IMPERIAL,
+                            }, (res) => {
+                                console.log(res);
+                                res.rows[0].elements.forEach((dest, index) => {  
+                                    
+                                    results.push({
+                                        distance: dest.distance.text,
+                                        ...data[index]
                                     })
-                                }
-                            })
+                                    if (index >= res.rows[0].elements.length - 1) {
+                                        commit('setSales', results);
+                                        resolve();
+                                    }
+                                })
+                            });
                         commit('setSales', data);
                         resolve();
                     }

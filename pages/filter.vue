@@ -60,8 +60,7 @@
         <div class="settings-categories_modal" v-if="showLocationEditor">
             <div class="close-button" @click="showLocationEditor = false">X</div>
             <h2>Choose City:</h2>
-            <input type="text" name="City" v-model="cityInput" @change="getPlaceSuggestion()" id="city" placeholder="City...">
-            <input type="text" name="State" v-model="stateInput" @change="getPlaceSuggestion()" id="state" placeholder="State...">
+            <input type="text" name="City" id="autocomplete" placeholder="City...">
         </div>
         <div class="settings-categories_modal" v-if="showSortPicker">
             <div class="close-button" @click="showSortPicker = false">X</div>
@@ -126,8 +125,16 @@ export default {
             cityInput: '',
             stateInput: '',
             placeSuggestions: [],
+            autocomplete: '',
             sessionToken: Math.floor((Math.random() * 99999999999))
         }
+    },
+    mounted() {
+/*         this.autocomplete = google.maps.places.Autocomplete(
+            (document.getElementById('autocomplete')),
+            { type: ['cities'] }
+        );
+        this.autocomplete.addListener('place_changed', this.onPlaceChanged); */
     },
     computed: {
         checkedCategories() {
@@ -155,12 +162,8 @@ export default {
         removeCategory(category) {
             category.checked = false;
         },
-        getPlaceSuggestion() {
-/*             this.$store.dispatch('getPlaceSuggestions', {
-                city: this.cityInput,
-                state: this.stateInput
-            }) */
-            let service = google.maps.places.PlacesService()
+        onPlaceChanged() {
+            console.log(this.autocomplete.getPlace());
         }
     }
 }

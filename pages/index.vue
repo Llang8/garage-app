@@ -58,7 +58,7 @@
           </a>
         </div>
         <p class="categories"><span class="categories-label">Categories:</span><br /><span v-for="(category, index) in sale.categories" class="category"> {{ category }}</span></p> 
-        <p class="distance"><span class="distance-value">{{ Math.floor(Math.random() * 26) }}</span> Miles</p>
+        <p class="distance"><span class="distance-value">{{ sale.distance }}</span></p>
       </div>
     </div>
   </div>
