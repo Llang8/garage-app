@@ -4,6 +4,8 @@ import Cookie from 'js-cookie';
 import JWTDecode from 'jwt-decode';
 import cookieparser from 'cookieparser';
 import axios from 'axios';
+import { salesMutations, salesActions, salesGetters } from './sales';
+import { usersMutations, usersActions, usersGetters } from './users';
 
 export const state = () => ({
     user: null,
@@ -19,18 +21,6 @@ export const state = () => ({
 })
 
 export const mutations = {
-    setUser (state, account) {
-        state.user = account;
-    },
-    setUserPosition (state, position) {
-        state.position = position.position;
-    },
-    setSales (state, payload) {
-        state.sales = payload;
-    },
-    addSale (state,payload) {
-        state.sales = [payload, ...state.sales];
-    },
     setBookmarks (state, payload) {
         state.bookmarks = payload;
     },
@@ -48,16 +38,17 @@ export const mutations = {
     },
     setFilterSettings(state, payload) {
         state.filterSettings = payload;
-    }
+    },
+    ...salesMutations,
+    ...usersMutations
 }
 
 export const getters = {
-    userLocationArray: state => {
-        return [state.position.longitude, state.position.latitude];
-    },
     sortBy: state => {
         return state.filterSettings.sortBy;
-    }
+    },
+    ...salesGetters,
+    ...usersGetters
 }
 
 export const actions = {
@@ -79,125 +70,6 @@ export const actions = {
             displayName: decoded.displayName
           });
         }
-    },
-    async signInWithEmail({ commit }, account) {
-        try {
-            // Login the user
-            await auth.signInWithEmailAndPassword(account.email, account.password);
-        
-            // Get JWT from Firebase
-            const token = await auth.currentUser.getIdToken();
-            const { email, uid, displayName } = auth.currentUser;
-        
-            // Set JWT to the cookie
-            Cookie.set("access_token", token);
-        
-            // Set the user locally
-            commit("setUser", { email, uid, displayName });
-        } catch (error) {
-            throw error;
-        }
-    },
-    signUpWithEmail({context}, payload) {
-        return new Promise ((resolve, reject) => {
-            auth.createUserWithEmailAndPassword(payload.email, payload.password)
-                .then(() => {
-                    if (payload.username) {
-                    
-                        let user = auth.currentUser;
-                        user.sendEmailVerification();
-                        
-                        user.updateProfile({
-                            displayName: payload.username
-                        }).then(() => {
-                            resolve();
-                        });
-                    
-                    } else {
-                        resolve();
-                    }
-                    /* resolve(); */
-                }).catch((e) => {
-                    reject(e.code + ': ' + e.message);
-                })
-        })
-    },
-    signOut({context}, payload) {
-        return new Promise ((resolve, reject) => {
-            auth.signOut()
-                .then(() => {
-                    Cookie.remove('access_token');
-                    resolve();
-                }).catch((e) => {
-                    reject(e.code + ': ' + e.message);
-                })
-        })       
-    },
-    getSales({commit, context, getters}, payload) {
-        return new Promise ((resolve, reject) => {
-            db.collection('sales').get().then((snapshot) => {
-                let data = []
-                let results = []
-                snapshot.docs.forEach((doc, index) => {
-                    let docData = doc.data()
-                    data.push({id: doc.id, ...docData})
-
-                    if (index >= snapshot.docs.length - 1) {
-                        let userLoc = new google.maps.LatLng(getters.userLocationArray[1], getters.userLocationArray[0])
-                        let access_token = 'AIzaSyD10tBIEsk0pFf1sn5igJmdyIuWTdMro8s';
-                        let saleLocs = data.map((sale) => {
-                            return new google.maps.LatLng(sale.geopoint[0], sale.geopoint[1]);
-                        })
-                        /* axios.get(`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${userLoc.join(',')}&destinations=${saleLocs.join(';')}&key=${access_token}`)
-                         */let service = new google.maps.DistanceMatrixService();
-                        service.getDistanceMatrix(
-                            {
-                              origins: [userLoc],
-                              destinations: [...saleLocs],
-                              travelMode: 'DRIVING',
-                              unitSystem: google.maps.UnitSystem.IMPERIAL,
-                            }, (res) => {
-                                console.log(res);
-                                res.rows[0].elements.forEach((dest, index) => {  
-                                    
-                                    results.push({
-                                        distance: {
-                                            text: dest.distance.text,
-                                            value: dest.distance.value
-                                        },
-                                        ...data[index]
-                                    })
-                                })
-
-                                results = results.sort((a, b) => {
-                                    
-                                    console.log(getters.sortBy);
-                                    if(getters.sortBy === 'Distance') {
-                                        if(a.distance.value > b.distance.value) {
-                                            return 1;
-                                        } else if (a.distance.value < b.distance.value) {
-                                            return -1;
-                                        } else {
-                                            return 0;
-                                        }
-                                    } else if (getters.sortBy === 'Day: Soonest to Furthest') {
-                                        return new Date(b.dates[0].date) - new Date(a.dates[0].date);
-                                    } else if (getters.sortBy === 'Day: Furthest to Soonest') {
-                                        return new Date(a.dates[0].date) - new Date(b.dates[0].date);
-                                    }
-                                })
-                                console.log('TEST OVER')
-                                commit('setSales', results);
-                                resolve();
-                            });
-                        commit('setSales', data);
-                        resolve();
-                    }
-                })
-            })
-
-            
-        });
     },
     addBookmark({commit, context}, payload) {
         return new Promise ((resolve, reject) => {
@@ -267,15 +139,6 @@ export const actions = {
                 })
         })
     },
-    sendPasswordReset({commit, context}, payload) {
-        return new Promise ((resolve, reject) => {
-            auth.sendPasswordResetEmail(payload.email)
-                .then((res) => {
-                    resolve(res)
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-        })
-    }
+    ...salesActions,
+    ...usersActions
 }
