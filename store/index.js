@@ -47,6 +47,12 @@ export const getters = {
     sortBy: state => {
         return state.filterSettings.sortBy;
     },
+    categories: state => {
+        let categoryNames = state.filterSettings.categories.map(category => {
+            return category.name;
+        })
+        return categoryNames;
+    },
     ...salesGetters,
     ...usersGetters
 }

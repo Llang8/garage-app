@@ -45,8 +45,8 @@
                 </ul>
             </div>
         </div>
-        <div class="settings-categories_modal" v-if="showCategoryPicker">
-            <div class="close-button" @click="showCategoryPicker = false">X</div>
+        <div class="settings-categories_modal" v-if="modalStatus === 'SHOW_CATEGORY'">
+            <div class="close-button" @click="modalStatus = 'NO_MODALS'">X</div>
             <h2>Select Categories:</h2>
             <div class="category-picker">
                 <ul class="category-selection">
@@ -57,13 +57,13 @@
                 </ul>
             </div>
         </div>
-        <div class="settings-categories_modal" v-if="showLocationEditor">
-            <div class="close-button" @click="showLocationEditor = false">X</div>
+        <div class="settings-categories_modal" v-if="modalStatus === 'SHOW_LOCATION'">
+            <div class="close-button" @click="modalStatus = 'NO_MODALS'">X</div>
             <h2>Choose City:</h2>
             <input type="text" name="City" id="autocomplete" placeholder="City...">
         </div>
-        <div class="settings-categories_modal" v-if="showSortPicker">
-            <div class="close-button" @click="showSortPicker = false">X</div>
+        <div class="settings-categories_modal" v-if="modalStatus === 'SHOW_SORT'">
+            <div class="close-button" @click="modalStatus = 'NO_MODALS'">X</div>
             <h2>Choose Sort Method:</h2>
             <div class="category-picker">
                 <ul class="category-selection">
@@ -94,6 +94,9 @@ export default {
             distance: 50,
             categories: [{
                 name: 'Clothes',
+                checked: false
+            },{
+                name: 'Bikes',
                 checked: false
             },{
                 name: 'Toys',
@@ -127,17 +130,21 @@ export default {
             placeSuggestions: [],
             autocomplete: '',
             location: 'Chicago, Illinois',
+            modalStatus: 'NO_MODALS',
             sessionToken: Math.floor((Math.random() * 99999999999))
         }
     },
     mounted() {
-/*         this.autocomplete = google.maps.places.Autocomplete(
-            (document.getElementById('autocomplete')),
-            { type: ['cities'] }
-        );
-        this.autocomplete.addListener('place_changed', this.onPlaceChanged); */
         this.sortBy = this.$store.state.filterSettings.sortBy;
         this.location = this.$store.state.filterSettings.location;
+        this.categories = this.categories.map((category) => {
+            this.$store.state.filterSettings.categories.forEach((checkedCategory) => {
+                if (checkedCategory.name === category.name) {
+                    category.checked = true;
+                }
+            })
+            return category;
+        })
     },
     computed: {
         checkedCategories() {
@@ -149,19 +156,13 @@ export default {
     },
     methods: {
         addCategory() {
-            this.showCategoryPicker = true;
-            this.showLocationEditor = false;
-            this.showSortPicker = false;
+            this.modalStatus = 'SHOW_CATEGORY'
         },
         changeLocation() {
-            this.showCategoryPicker = false;
-            this.showLocationEditor = true;
-            this.showSortPicker = false;
+            this.modalStatus = 'SHOW_LOCATION'
         },
         changeSort() {
-            this.showCategoryPicker = false;
-            this.showLocationEditor = false;
-            this.showSortPicker = true;
+            this.modalStatus = 'SHOW_SORT'
         },
         removeCategory(category) {
             category.checked = false;
@@ -176,6 +177,7 @@ export default {
                 sortBy: this.sortBy,
                 categories: [...this.checkedCategories]
             })
+            this.$router.go(-1)
         }
     }
 }

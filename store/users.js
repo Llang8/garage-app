@@ -1,5 +1,6 @@
 import { auth, db } from "../plugins/firebase";
 import axios from 'axios';
+import Cookie from 'js-cookie';
 
 export const usersActions = {
 
