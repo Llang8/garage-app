@@ -65,20 +65,22 @@ export const salesActions = {
             })
         }
 
-        console.log(getters.categories);
-        if (getters.categories.length == 0) {
-            return new Promise ((resolve, reject) => {
-                db.collection('sales').get().then((snapshot) => {
-                    filterResults(snapshot, resolve, reject);
-                })
-            });
-        } else {
-            return new Promise ((resolve, reject) => {
-                db.collection('sales').where('categories', 'array-contains-any', [...getters.categories]).get().then((snapshot) => {
-                    filterResults(snapshot, resolve, reject);
-                })
-            });
+        let query = db.collection('sales');
+
+        /* Build query */
+        if (getters.categories.length > 0) {
+            query = query.where('categories', 'array-contains-any', [...getters.categories]);
         }
+
+        if (getters.searchQuery.length > 0) {
+            /* query = query.where('keywords', 'array-contains-any', [...getters.searchQuery]); */
+        }
+
+        return new Promise ((resolve, reject) => {
+            query.get().then((snapshot) => {
+                filterResults(snapshot, resolve, reject);
+            })
+        });
     },
 }
 

@@ -13,7 +13,8 @@ export const state = () => ({
         location: 'Chicago, Illinois',
         distance: 50,
         sortBy: 'Distance',
-        categories: []
+        categories: [],
+        searchQuery: ''
     },
     position: null,
     bookmarks: [],
@@ -52,6 +53,9 @@ export const getters = {
             return category.name;
         })
         return categoryNames;
+    },
+    searchQuery: state => {
+        return state.filterSettings.searchQuery.split(" ");
     },
     ...salesGetters,
     ...usersGetters

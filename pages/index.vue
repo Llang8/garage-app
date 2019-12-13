@@ -136,7 +136,8 @@ export default {
       })
     },
     searchSales() {
-      console.log(this.search);
+      this.$store.state.filterSettings.searchQuery = this.search;
+      this.$store.dispatch('getSales');
     },
     openMaps(sale) {
         let lat = sale.geopoint[0];
