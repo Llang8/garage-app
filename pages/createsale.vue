@@ -85,7 +85,7 @@
 
 <script>
 import axios from 'axios';
-import { db } from '~/plugins/firebase';
+import { db, GeoPoint } from '~/plugins/firebase';
 
 export default {
     layout: 'settings',
@@ -167,7 +167,7 @@ export default {
                                 city: this.address.city,
                                 dates: this.dates,
                                 description: this.description,
-                                geopoint: [location.lat,location.lng],
+                                geopoint: new GeoPoint(location.lat, location.lng),
                                 images: this.images,
                                 title: this.title,
                                 uid: this.$store.state.user.uid,

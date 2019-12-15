@@ -18,4 +18,5 @@ if (!firebase.apps.length) {
 
 export const auth = firebase.auth();
 export const db = firebase.firestore();
+export const GeoPoint = firebase.firestore.GeoPoint;
 export default firebase;

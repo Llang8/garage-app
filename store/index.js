@@ -57,6 +57,9 @@ export const getters = {
     searchQuery: state => {
         return state.filterSettings.searchQuery.split(" ");
     },
+    distance: state => {
+        return state.filterSettings.distance;
+    },
     ...salesGetters,
     ...usersGetters
 }

@@ -72,7 +72,11 @@ export const usersActions = {
 
 export const usersGetters = {
     userLocationArray: state => {
-        return [state.position.longitude, state.position.latitude];
+        if (state.position) {
+            return [state.position.latitude, state.position.longitude];
+        } else {
+            return null;
+        }
     },
 }
 

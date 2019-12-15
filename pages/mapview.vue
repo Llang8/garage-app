@@ -128,13 +128,10 @@ export default {
     },
     salesPositions() {
       return this.$store.state.sales.map((sale) => {
-        if (sale.geopoint[0] === undefined || sale.geopoint[1] === undefined) {
+        if (sale.geopoint === undefined) {
           return [0,0];
         }
-        let tmp = sale.geopoint[1];
-        sale.geopoint[1] = sale.geopoint[0];
-        sale.geopoint[0] = tmp;
-        return sale.geopoint;
+        return [sale.geopoint.longitude, sale.geopoint.latitude];
       })
     },
     truncDesc() {

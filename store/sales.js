@@ -1,24 +1,55 @@
-import { auth, db } from "../plugins/firebase";
+import { db, GeoPoint } from "../plugins/firebase";
 import axios from 'axios';
 
 export const salesActions = {
     getSales({commit, context, getters}, payload) {
+        let latitude;
+        let longitude;        
+        let latPerMile = 0.0144927536231884;
+        let lonPerMile = 0.0181818181818182;
+        let distance = getters.distance;
+
+
+        if (getters.userLocationArray !== null) {
+            latitude = getters.userLocationArray[0];
+            longitude = getters.userLocationArray[1];
+            runQuery();
+        } else {
+            navigator.geolocation.getCurrentPosition((position) => {
+                console.log(position);
+                latitude = position.coords.latitude;
+                longitude = position.coords.longitude;
+                runQuery();
+            });
+        }
 
         function filterResults(snapshot, resolve, reject) {
             let data = []
             let results = []
-            snapshot.docs.forEach((doc, index) => {
+            let docs = snapshot.docs;
+            docs = docs.filter((doc, index) => {
+                console.log(doc.data());
+                if (doc.data().geopoint.longitude > longitude - (lonPerMile * distance)
+                    && doc.data().geopoint.longitude < longitude + (lonPerMile * distance)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+
+
+            docs.forEach((doc, index) => {
                 let docData = doc.data()
                 data.push({id: doc.id, ...docData})
 
-                if (index >= snapshot.docs.length - 1) {
-                    let userLoc = new google.maps.LatLng(getters.userLocationArray[1], getters.userLocationArray[0])
-                    let access_token = 'AIzaSyD10tBIEsk0pFf1sn5igJmdyIuWTdMro8s';
+                if (index >= docs.length - 1) {
+                    let userLoc = new google.maps.LatLng(latitude, longitude)
                     let saleLocs = data.map((sale) => {
-                        return new google.maps.LatLng(sale.geopoint[0], sale.geopoint[1]);
+                        return new google.maps.LatLng(sale.geopoint.latitude, sale.geopoint.longitude);
                     })
                     /* axios.get(`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${userLoc.join(',')}&destinations=${saleLocs.join(';')}&key=${access_token}`)
-                     */let service = new google.maps.DistanceMatrixService();
+                     */
+                    let service = new google.maps.DistanceMatrixService();
                     service.getDistanceMatrix(
                         {
                           origins: [userLoc],
@@ -65,22 +96,33 @@ export const salesActions = {
             })
         }
 
-        let query = db.collection('sales');
+        function runQuery() {
+            let query = db.collection('sales');
 
-        /* Build query */
-        if (getters.categories.length > 0) {
-            query = query.where('categories', 'array-contains-any', [...getters.categories]);
+            /* Build query */
+            if (getters.categories.length > 0) {
+            /*     query = query.where('categories', 'array-contains-any', [...getters.categories]);
+             */}
+    
+            if (getters.searchQuery.length > 0) {
+                /* query = query.where('keywords', 'array-contains-any', [...getters.searchQuery]); */
+            }
+    
+            // ~1 mile of lat and lon in degrees
+            let north = new GeoPoint(latitude + (latPerMile * distance), 0);
+            let south = new GeoPoint(latitude - (latPerMile * distance), 0);
+    
+            query = query.where('geopoint', '<=', north);
+            query = query.where('geopoint', '>=', south);
+    
+    
+            return new Promise ((resolve, reject) => {
+                query.get().then((snapshot) => {
+                    console.log(snapshot.docs)
+                    filterResults(snapshot, resolve, reject);
+                })
+            });
         }
-
-        if (getters.searchQuery.length > 0) {
-            /* query = query.where('keywords', 'array-contains-any', [...getters.searchQuery]); */
-        }
-
-        return new Promise ((resolve, reject) => {
-            query.get().then((snapshot) => {
-                filterResults(snapshot, resolve, reject);
-            })
-        });
     },
 }
 
