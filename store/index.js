@@ -11,7 +11,7 @@ export const state = () => ({
     user: null,
     filterSettings: {
         location: 'Chicago, Illinois',
-        distance: 50,
+        distance: 25,
         sortBy: 'Distance',
         categories: [],
         searchQuery: ''
