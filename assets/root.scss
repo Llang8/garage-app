@@ -115,6 +115,13 @@ table {
     }
 }
 
+.page-title {
+    background: white;
+    padding: 10px 0;
+    font-size: 21px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid $cool-grey-9;
+}
 /* Imports */
 @import './components/nav.scss';
 @import './components/icons.scss';

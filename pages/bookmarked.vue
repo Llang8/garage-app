@@ -1,6 +1,6 @@
 <template>
 <div class="bookmarks">
-    <h2 style="text-align: center;">Your Bookmarks</h2>
+    <h2 class="page-title" style="text-align: center;">Your Bookmarks</h2>
     <div class="results-container">
         <div class="result" v-for="(sale, index) in sales" :key="sale.id">
             <img :src="sale.images[0]" :alt="sale.title">
@@ -24,7 +24,6 @@
             <p class="sale-description">{{ sale.description.substring(0, 300) }}...</p>
             <p class="categories"><strong>Categories:</strong><span v-for="(category, index) in sale.categories"> {{ category }}</span></p> 
             <h3 class="distance">{{ Math.floor(Math.random() * 26) }} Miles</h3>
-            <hr />
         </div>
     </div>
 </div>

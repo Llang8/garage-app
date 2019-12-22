@@ -175,7 +175,8 @@ export default {
                 location: this.location,
                 distance: this.distance,
                 sortBy: this.sortBy,
-                categories: [...this.checkedCategories]
+                categories: [...this.checkedCategories],
+                searchQuery: this.$store.state.filterSettings.searchQuery
             })
             this.$router.go(-1)
         }
